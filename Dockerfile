@@ -12,8 +12,14 @@ ARG POETRY_VERSION=1.6.1
 # Set pip"s standard version
 RUN pip install pip==${PIP_VERSION} poetry==${POETRY_VERSION}
 
+COPY poetry.toml pyproject.toml poetry.lock ./
+
+RUN poetry install
+
 # Copy source code
 COPY . .
 
+RUN poetry install
+
 # Run API
-CMD ["python", "./src/spira-training/hello-world.py"]
+CMD ["poetry", "run", "python", "./src/spira-training/hello-world.py"]
