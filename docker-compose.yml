@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  hello-world:
+    build:
+      context: .
+    volumes:
+      - .:/hello-world
+      - /hello-world/.venv
