@@ -21,6 +21,9 @@ COPY . .
 
 RUN poetry install
 
+# Run Tests
+
+RUN poetry run pytest
 
 # Run API
 CMD ["poetry", "run", "python", "./src/spira_training/main.py"]
