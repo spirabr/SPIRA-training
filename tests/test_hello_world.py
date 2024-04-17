@@ -2,7 +2,7 @@
 import sys
 from io import StringIO
 import pytest
-from src.spira_training.hello_world import HelloWorld
+from spira_training.hello_world import HelloWorld
 
 def test_hello_world():
     # guardar a saída padrão original

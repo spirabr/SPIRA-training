@@ -21,5 +21,6 @@ COPY . .
 
 RUN poetry install
 
+
 # Run API
-CMD ["poetry", "run", "python", "./src/spira-training/hello-world.py"]
+CMD ["poetry", "run", "python", "./src/spira_training/main.py"]
