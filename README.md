@@ -10,7 +10,8 @@ To run the project on the host machine, poetry is required.
 
 ### Installing dependencies
 
-If you prefer to run the project locally, install poetry, then install the project packages:
+It's suggested to run the project with [Docker](https://docs.docker.com/engine/install/).
+If you prefer to run the project locally, [install poetry](https://python-poetry.org/docs/#installation), then install the project packages:
 
 ```bash
 poetry install
