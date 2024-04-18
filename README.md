@@ -6,7 +6,15 @@ A training pipeline to [SPIRA](https://spira.ime.usp.br/) project.
 
 SPIRA-training is built using Python and uses Docker for containerization.
 
-To develop SPIRA-training, please install and use Docker.
+To run the project on the host machine, poetry is required. 
+
+### Installing dependencies
+
+If you prefer to run the project locally, install poetry, then install the project packages:
+
+```bash
+poetry install
+```
 
 ## Compilation
 
@@ -26,6 +34,20 @@ To execute the project, run:
 docker compose up
 ```
 
+Alternatively, to run locally, execute:
+
+```sh
+poetry run python src/spira_training/main.py
+```
+
+## Tests
+
+The tests are run in the build phase.
+To locally run them, execute: 
+
+```sh
+poetry run pytest
+```
 ## Authors
 - [Roberto Bolgheroni](https://github.com/bolgheroni)
 - [Lucas Quaresma](https://github.com/lucasqml)
