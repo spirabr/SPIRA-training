@@ -1,9 +1,18 @@
 version: "3.8"
 
 services:
-  hello-world:
+  app:
     build:
       context: .
     volumes:
-      - .:/hello-world
-      - /hello-world/.venv
+      - .:/app
+      - /app/.venv
+    
+  tests:
+    build:
+      context: .
+    command: "poetry run pytest"
+    volumes:
+      - .:/app
+      - /app/.venv
+      
