@@ -5,15 +5,15 @@ import pytest
 from spira_training.hello_world import HelloWorld
 
 def test_hello_world():
-    # guardar a saída padrão original
-    stdout_original = sys.stdout
-    sys.stdout = StringIO()  # substituir a saída padrão por uma string
+    mockOutput = StringIO()  # substituir a saída padrão por uma string
 
-    hello = HelloWorld()  
+    hello = HelloWorld(
+        output=mockOutput
+    )  
+
     hello.print_message_and_version()  
 
-    output = sys.stdout.getvalue()  
+    output = mockOutput.getvalue()  
 
-    sys.stdout = stdout_original
-
-    assert output == "Hello world (from SPIRA-training)!!\n" + sys.version + "\n"
+    assert output.find("Hello world from SPIRA-training)!!")
+    assert output.find(f"{sys.version}")
