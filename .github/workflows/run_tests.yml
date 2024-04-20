@@ -1,0 +1,18 @@
+name: Running Tests
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  unit_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Run Unit Tests
+        run: make unit-tests
+  
