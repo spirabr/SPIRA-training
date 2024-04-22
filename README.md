@@ -11,20 +11,11 @@ To run the project on the host machine, poetry is required.
 ### Installing dependencies
 
 It's suggested to run the project with [Docker](https://docs.docker.com/engine/install/).
-If you prefer to run the project locally, [install poetry](https://python-poetry.org/docs/#installation), then install the project packages:
+Alternatively, [install poetry](https://python-poetry.org/docs/#installation), then install the project packages:
 
 ```bash
+# at the root
 poetry install
-```
-
-## Compilation
-
-The compilation of all Python files is handled by Docker.
-
-To build the Docker image, run:
-
-```sh
-docker compose build
 ```
 
 ## Execution 
@@ -32,23 +23,33 @@ docker compose build
 To execute the project, run:
 
 ```sh
-docker compose up
+# at the root
+make app
 ```
 
-Alternatively, to run locally, execute:
+Alternatively, execute:
 
 ```sh
+# at the root
 poetry run python src/spira_training/main.py
 ```
 
 ## Tests
 
-The tests are run in the build phase.
-To locally run them, execute: 
+To execute the tests, run:
 
 ```sh
+# at the root
+make unit-tests
+```
+
+Alternatively, execute: 
+
+```sh
+# at the root
 poetry run pytest
 ```
+
 ## Authors
 - [Roberto Bolgheroni](https://github.com/bolgheroni)
 - [Lucas Quaresma](https://github.com/lucasqml)
