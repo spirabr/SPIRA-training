@@ -13,7 +13,7 @@ def test_hello_world():
 
     hello.print_message_and_version()  
 
-    output = mockOutput.getvalue()  
+    output = mockOutput.getvalue().lower()
 
-    assert output.find("Hello world from SPIRA-training)!!")
-    assert output.find(f"{sys.version}")
+    assert "hello world" in output
+    assert f"{sys.version}".lower() in output

@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   app:
+    image: spira-training:0.0.1
     build:
       context: .
     volumes:
@@ -9,6 +10,7 @@ services:
       - /app/.venv
     
   tests:
+    image: spira-training:0.0.1
     build:
       context: .
     command: "poetry run pytest"
