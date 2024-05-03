@@ -10,6 +10,6 @@ jobs:
             - uses: actions/checkout@v3
             - name: Build and push the image]
               run: |
-                docker login --username ${{ secrets.GH_USER }} --password ${{ secrets.GH.PAT }} gchr.io
+                docker login --username ${{ secrets.GH_USER }} --password ${{ secrets.GH_PAT }} gchr.io
                 docker build . --tag gchr.io/${{ secrets.GH_USER }}/spira-training:0.0.1
                 docker push gchr.io/${{ secrets.GH_USER }}/spira-training:0.0.1
