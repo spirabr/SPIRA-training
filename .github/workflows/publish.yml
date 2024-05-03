@@ -8,8 +8,8 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
-            - name: Build and push the image]
+            - name: Build and push the image
               run: |
-                docker login --username ${{ secrets.GH_USER }} --password ${{ secrets.GH_PAT }} gchr.io
-                docker build . --tag gchr.io/${{ secrets.GH_USER }}/spira-training:0.0.1
-                docker push gchr.io/${{ secrets.GH_USER }}/spira-training:0.0.1
+                echo ${{ secrets.GT_PAT }} | docker login ghcr.io -u ${{ secrets.GH_USER }} --password-stdin
+                docker build . -t ghcr.io/${{ secrets.GH_USER }}/spira-training:0.0.1
+                docker push ghcr.io/${{ secrets.GH_USER }}/spira-training:0.0.1
