@@ -11,5 +11,5 @@ jobs:
             - name: Build and push the image
               run: |
                 echo ${{ secrets.GH_PAT }} | docker login ghcr.io -u ${{ secrets.GH_USER }} --password-stdin
-                docker build . -t ghcr.io/${{ secrets.GH_USER }}/spira-training:0.0.1
-                docker push ghcr.io/${{ secrets.GH_USER }}/spira-training:0.0.1
+                docker build . -t ghcr.io/${{ secrets.GH_USER }}/spira-training:latest
+                docker push ghcr.io/${{ secrets.GH_USER }}/spira-training:latest
