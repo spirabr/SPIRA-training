@@ -1,4 +1,4 @@
-# SPIRA-training
+# SPIRA Training
 
 A training pipeline to [SPIRA](https://spira.ime.usp.br/) project.
 
