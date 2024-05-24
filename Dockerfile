@@ -1,4 +1,4 @@
-LABEL org.opencontainers.image.source https://github.com/spirabr/SPIRA-training
+LABEL org.opencontainers.image.source="https://github.com/spirabr/SPIRA-training"
 
 # Arguments to configure Python
 ARG PYTHON_VERSION=3.12
