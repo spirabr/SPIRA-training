@@ -1,5 +1,4 @@
 from typing import List
-
 from src.spira_training.shared.models.transformed_data import TransformedData
 
 
