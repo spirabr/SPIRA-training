@@ -9,6 +9,8 @@ FROM python:${PYTHON_VERSION} AS build
 ARG PIP_VERSION=23.2.1
 ARG POETRY_VERSION=1.6.1
 
+LABEL org.opencontainers.image.source="https://github.com/spirabr/SPIRA-training"
+
 WORKDIR /app
 
 # Set pip"s standard version
