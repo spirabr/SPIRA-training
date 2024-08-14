@@ -1,5 +1,5 @@
 from typing import List
-from src.spira_training.shared.models.transformed_data import TransformedData
+from src.spira_training.shared.core.models.transformed_data import TransformedData
 
 
 class Dataset:

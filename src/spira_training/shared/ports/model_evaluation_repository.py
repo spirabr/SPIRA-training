@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from src.spira_training.shared.models.model_evaluation import ModelEvaluation
+from src.spira_training.shared.core.models.model_evaluation import ModelEvaluation
 
 
 class ModelEvaluationRepository(ABC):

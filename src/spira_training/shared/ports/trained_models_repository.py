@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from src.spira_training.shared.models.trained_model import TrainedModel
+from src.spira_training.shared.core.models.trained_model import TrainedModel
 
 
 class TrainedModelsRepository(ABC):
