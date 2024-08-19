@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import List
 from src.spira_training.shared.core.models.dataset import Dataset
 
 

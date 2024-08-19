@@ -7,7 +7,3 @@ class AudiosRepository(ABC):
     @abstractmethod
     def get_audios(self, path: str) -> List[Audio]:
         pass
-
-    @abstractmethod
-    def save_audios(self, audios: List[Audio], path: str) -> None:
-        pass
