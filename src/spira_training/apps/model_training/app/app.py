@@ -1,4 +1,6 @@
-from src.spira_training.apps.model_training.app.model_trainer import ModelTrainer
+from src.spira_training.apps.model_training.app.interfaces.model_trainer import (
+    ModelTrainer,
+)
 from src.spira_training.shared.ports.audios_repository import AudiosRepository
 from src.spira_training.shared.ports.trained_models_repository import (
     TrainedModelsRepository,
@@ -16,7 +18,7 @@ class App:
         self.model_trainer = model_trainer
         self.trained_models_repository = trained_models_repository
 
-    def train_model(
+    def execute(
         self,
         train_audios_path: str,
         validation_audios_path: str,
@@ -24,7 +26,7 @@ class App:
     ) -> None:
         train_dataset = self.audios_repository.load_audios(train_audios_path)
         validation_dataset = self.audios_repository.load_audios(validation_audios_path)
-        self.model_trainer.train_model(train_dataset, validation_dataset)
-        self.trained_models_repository.save_model(
-            self.model_trainer.model, model_storage_path
+        trained_model = self.model_trainer.train_model(
+            train_dataset, validation_dataset
         )
+        self.trained_models_repository.save_model(trained_model, model_storage_path)
