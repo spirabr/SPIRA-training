@@ -32,8 +32,11 @@ async def test_execute():
     # Arrange
     training_dataset = make_dataset()
     validation_dataset = make_dataset()
+    trained_model = make_trained_model()
+
     dataset_repository = FakeDatasetRepository()
     trained_models_repository = FakeTrainedModelsRepository()
+    model_trainer = FakeModelTrainer().with_train_result(trained_model)
 
     await dataset_repository.save_dataset(
         path="any_train_path", dataset=training_dataset
@@ -41,8 +44,6 @@ async def test_execute():
     await dataset_repository.save_dataset(
         path="any_validation_path", dataset=validation_dataset
     )
-    trained_model = make_trained_model()
-    model_trainer = FakeModelTrainer().with_train_result(trained_model)
 
     sut = make_sut(
         dataset_repository=dataset_repository,
