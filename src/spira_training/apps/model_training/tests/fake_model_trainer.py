@@ -13,18 +13,18 @@ class FakeModelTrainer(ModelTrainer):
         self.train_result: Optional[TrainedModel] = None
 
     async def train_model(
-        self, train_dataset: Dataset, validation_dataset: Dataset
+        self, train_dataset: Dataset, test_dataset: Dataset
     ) -> TrainedModel:
         self.called_with_args = {
             "train_dataset": train_dataset,
-            "validation_dataset": validation_dataset,
+            "test_dataset": test_dataset,
         }
         return self.train_result or make_trained_model()
 
-    def called_with(self, train_dataset, validation_dataset):
+    def called_with(self, train_dataset, test_dataset):
         return self.called_with_args == {
             "train_dataset": train_dataset,
-            "validation_dataset": validation_dataset,
+            "test_dataset": test_dataset,
         }
 
     def with_train_result(self, trained_model: TrainedModel):
