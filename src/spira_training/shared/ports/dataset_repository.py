@@ -4,9 +4,9 @@ from src.spira_training.shared.core.models.dataset import Dataset
 
 class DatasetRepository(ABC):
     @abstractmethod
-    def get_dataset(self, path: str) -> Dataset:
+    async def get_dataset(self, path: str) -> Dataset:
         pass
 
     @abstractmethod
-    def save_dataset(self, dataset: Dataset, path: str) -> None:
+    async def save_dataset(self, dataset: Dataset, path: str) -> None:
         pass
