@@ -1,7 +1,7 @@
 from src.spira_training.apps.model_training.app.interfaces.model_trainer import (
     ModelTrainer,
 )
-from src.spira_training.shared.ports.audios_repository import AudiosRepository
+from src.spira_training.shared.ports.dataset_repository import DatasetRepository
 from src.spira_training.shared.ports.trained_models_repository import (
     TrainedModelsRepository,
 )
@@ -10,23 +10,27 @@ from src.spira_training.shared.ports.trained_models_repository import (
 class App:
     def __init__(
         self,
-        audios_repository: AudiosRepository,
+        dataset_repository: DatasetRepository,
         model_trainer: ModelTrainer,
         trained_models_repository: TrainedModelsRepository,
     ):
-        self.audios_repository = audios_repository
-        self.model_trainer = model_trainer
-        self.trained_models_repository = trained_models_repository
+        self._dataset_repository = dataset_repository
+        self._model_trainer = model_trainer
+        self._trained_models_repository = trained_models_repository
 
-    def execute(
+    async def execute(
         self,
-        train_audios_path: str,
-        validation_audios_path: str,
+        train_dataset_path: str,
+        validation_dataset_path: str,
         model_storage_path: str,
     ) -> None:
-        train_dataset = self.audios_repository.load_audios(train_audios_path)
-        validation_dataset = self.audios_repository.load_audios(validation_audios_path)
-        trained_model = self.model_trainer.train_model(
+        train_dataset = await self._dataset_repository.get_dataset(train_dataset_path)
+        validation_dataset = await self._dataset_repository.get_dataset(
+            validation_dataset_path
+        )
+        trained_model = await self._model_trainer.train_model(
             train_dataset, validation_dataset
         )
-        self.trained_models_repository.save_model(trained_model, model_storage_path)
+        await self._trained_models_repository.save_model(
+            trained_model, model_storage_path
+        )
