@@ -35,6 +35,8 @@ def make_sut(
 @pytest.mark.asyncio
 async def test_execute():
     # Arrange
+    dataset_path = "dataset_path"
+    model_storage_path = "any_model_storage_path"
     base_dataset = make_dataset()
     training_dataset = make_dataset()
     test_dataset = make_dataset()
@@ -47,7 +49,7 @@ async def test_execute():
     trained_models_repository = FakeTrainedModelsRepository()
     model_trainer = FakeModelTrainer().with_train_result(trained_model)
 
-    await dataset_repository.save_dataset(path="dataset_path", dataset=base_dataset)
+    await dataset_repository.save_dataset(path=dataset_path, dataset=base_dataset)
 
     sut = make_sut(
         dataset_repository=dataset_repository,
@@ -58,15 +60,13 @@ async def test_execute():
 
     # Act
     await sut.execute(
-        dataset_path="dataset_path",
-        model_storage_path="any_model_storage_path",
+        dataset_path=dataset_path,
+        model_storage_path=model_storage_path,
     )
 
     # Assert
     assert model_trainer.called_with(
         train_dataset=training_dataset, test_dataset=test_dataset
     )
-    saved_model = await trained_models_repository.get_model(
-        path="any_model_storage_path"
-    )
+    saved_model = await trained_models_repository.get_model(path=model_storage_path)
     assert saved_model == trained_model
