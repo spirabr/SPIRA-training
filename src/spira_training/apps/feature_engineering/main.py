@@ -5,10 +5,10 @@ from src.spira_training.apps.feature_engineering.app import App
 def main():
     config = Config.load()
     randomizer = Randomizer()
+    dataset_repository = DatasetRepository()
 
-    app = App(config, randomizer)
-    transformed_data = app.execute()
-    #save(transformed_data)
+    app = App(config, randomizer, dataset_repository)
+    app.execute()
 
 if __name__ == "__main__":
     main()
