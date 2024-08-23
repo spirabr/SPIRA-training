@@ -1,10 +1,12 @@
-from spira.config import Config
-from spira.utils.randomizer import Randomizer
-from src.spira_training.apps.feature_engineering.app import App
+from src.spira_training.apps.feature_engineering.app.app import App
+from src.spira_training.shared.core.services.randomizer import Randomizer
+from src.spira_training.shared.ports.config_loader import ConfigLoader
+from src.spira_training.shared.ports.dataset_repository import DatasetRepository
+
 
 def main():
-    config = Config.load()
-    randomizer = Randomizer()
+    config = ConfigLoader.load()
+    randomizer = Randomizer.initialize_random()
     dataset_repository = DatasetRepository()
 
     app = App(config, randomizer, dataset_repository)

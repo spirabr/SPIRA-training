@@ -1,8 +1,12 @@
-from src.spira_training.shared.core.services.data_processing import load_and_transform_data, load_data
+from src.spira_training.shared.core.interfaces.random import Random
+from src.spira_training.shared.core.models.config import Config
+from src.spira_training.shared.core.services.data_processing import load_data, generate_dataset
+from src.spira_training.shared.ports import dataset_repository
+from src.spira_training.shared.ports.dataset_repository import DatasetRepository
 
 
 class App:
-    def __init__(self, config: Config, randomizer: Randomizer, dataset_repository: DatasetRepository):
+    def __init__(self, config: Config, randomizer: Random, dataset_repository: DatasetRepository):
         self.config = config
         self.randomizer = randomizer
         self.dataset_repository = dataset_repository

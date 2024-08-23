@@ -1,9 +1,4 @@
-from src.spira_training.shared.adapters.valid_path import read_valid_paths_from_csv
-from src.spira_training.shared.core.domain.audio import Audios
-from src.spira_training.shared.core.services.audio_feature_transformer import create_audio_feature_transformer
-from src.spira_training.shared.core.services.audio_processor import create_audio_processor
-
-from src.spira_training.shared.core.models.dataset import Dataset
+from src.spira_training.shared.core.models.dataset import Dataset, Label
 from src.spira_training.shared.ports.audios_repository import AudiosRepository
 
 
@@ -30,40 +25,42 @@ def load_data(config):
     #     config.parameters.audio.hop_length,
     #     config.parameters.dataset.normalize,
     # )
-
-    return patients_inputs, controls_inputs, noises
+    #
+    # return patients_inputs, controls_inputs, noises
+    pass
 
 
 def generate_dataset(config, randomizer, patients_inputs, controls_inputs, noises):
-    audio_processor = create_audio_processor(config.parameters.audio)
+    # audio_processor = create_audio_processor(config.parameters.audio)
+    #
+    # patient_feature_transformer = create_audio_feature_transformer(
+    #     randomizer,
+    #     audio_processor,
+    #     config.options.feature_engineering,
+    #     config.parameters.feature_engineering,
+    #     config.parameters.feature_engineering.noisy_audio.num_noise_control,
+    #     noises,
+    # )
+    #
+    # control_feature_transformer = create_audio_feature_transformer(
+    #     randomizer,
+    #     audio_processor,
+    #     config.options.feature_engineering,
+    #     config.parameters.feature_engineering,
+    #     config.parameters.feature_engineering.noisy_audio.num_noise_control,
+    #     noises,
+    # )
 
-    patient_feature_transformer = create_audio_feature_transformer(
-        randomizer,
-        audio_processor,
-        config.options.feature_engineering,
-        config.parameters.feature_engineering,
-        config.parameters.feature_engineering.noisy_audio.num_noise_control,
-        noises,
-    )
+    # patients_features = patient_feature_transformer.transform_into_features(patients_inputs)
+    # controls_features = control_feature_transformer.transform_into_features(controls_inputs)
+    #
+    # patients_label = [Label.POSITIVE for _ in range(len(patients_features))]
+    # controls_label = [Label.NEGATIVE for _ in range(len(controls_features))]
+    #
+    # features = patients_features + controls_features
+    # labels = patients_label + controls_label
+    #
+    # dataset = Dataset(features=features, labels=labels)
 
-    control_feature_transformer = create_audio_feature_transformer(
-        randomizer,
-        audio_processor,
-        config.options.feature_engineering,
-        config.parameters.feature_engineering,
-        config.parameters.feature_engineering.noisy_audio.num_noise_control,
-        noises,
-    )
-
-    patients_features = patient_feature_transformer.transform_into_features(patients_inputs)
-    controls_features = control_feature_transformer.transform_into_features(controls_inputs)
-
-    patients_label = [Label.POSITIVE for _ in range(len(patients_features))]
-    controls_label = [Label.NEGATIVE for _ in range(len(controls_features))]
-
-    features = patients_features + controls_features
-    labels = patients_label + controls_label
-
-    dataset = Dataset(features=features, labels=labels)
-
-    return dataset
+    # return dataset
+    pass
