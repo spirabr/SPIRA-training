@@ -4,7 +4,7 @@ from src.spira_training.shared.ports.audios_repository import AudiosRepository
 
 def load_data(config):
 
-    audios = AudiosRepository.get_audios(config.paths)
+    #audios = AudiosRepository.get_audios(config.paths)
 
     # patients_paths = read_valid_paths_from_csv(config.parameters.dataset.patients_csv)
     # controls_paths = read_valid_paths_from_csv(config.parameters.dataset.controls_csv)
