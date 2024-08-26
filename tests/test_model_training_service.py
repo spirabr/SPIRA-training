@@ -1,12 +1,14 @@
+from pathlib import Path
 import pytest
-from src.spira_training.apps.model_training.app.app import App
-from src.spira_training.apps.model_training.tests.fake_model_trainer import (
-    FakeModelTrainer,
-)
 from src.spira_training.shared.core.models.splitted_dataset import SplittedDataset
-from tests.fake_dataset_repository import FakeDatasetRepository, make_dataset
-from tests.fake_dataset_splitter import FakeDatasetSplitter
-from tests.fake_trained_models_repository import (
+from src.spira_training.shared.core.services.model_training_service import (
+    ModelTrainingConfig,
+    ModelTrainingService,
+)
+from tests.fakes.fake_dataset_repository import FakeDatasetRepository, make_dataset
+from tests.fakes.fake_dataset_splitter import FakeDatasetSplitter
+from tests.fakes.fake_model_trainer import FakeModelTrainer
+from tests.fakes.fake_trained_models_repository import (
     FakeTrainedModelsRepository,
     make_trained_model,
 )
@@ -17,6 +19,7 @@ def make_sut(
     model_trainer=None,
     trained_models_repository=None,
     dataset_splitter=None,
+    config=None,
 ):
     dataset_repository = dataset_repository or FakeDatasetRepository()
     _model_trainer = model_trainer or FakeModelTrainer()
@@ -24,19 +27,21 @@ def make_sut(
         trained_models_repository or FakeTrainedModelsRepository()
     )
     _dataset_splitter = dataset_splitter or FakeDatasetSplitter()
-    return App(
+    return ModelTrainingService(
         dataset_repository=dataset_repository,
         model_trainer=_model_trainer,
         trained_models_repository=_trained_models_repository,
         dataset_splitter=_dataset_splitter,
+        config=config,
     )
 
 
 @pytest.mark.asyncio
 async def test_execute():
     # Arrange
-    dataset_path = "dataset_path"
-    model_storage_path = "any_model_storage_path"
+    dataset_path = Path("dataset_path")
+    trained_model_path = Path("any_model_storage_path")
+
     base_dataset = make_dataset()
     training_dataset = make_dataset()
     test_dataset = make_dataset()
@@ -51,22 +56,24 @@ async def test_execute():
 
     await dataset_repository.save_dataset(path=dataset_path, dataset=base_dataset)
 
+    config = ModelTrainingConfig(
+        dataset_path=dataset_path,
+        trained_model_path=trained_model_path,
+    )
     sut = make_sut(
         dataset_repository=dataset_repository,
         dataset_splitter=dataset_splitter,
         trained_models_repository=trained_models_repository,
         model_trainer=model_trainer,
+        config=config,
     )
 
     # Act
-    await sut.execute(
-        dataset_path=dataset_path,
-        model_storage_path=model_storage_path,
-    )
+    await sut.execute()
 
     # Assert
     assert model_trainer.called_with(
         train_dataset=training_dataset, test_dataset=test_dataset
     )
-    saved_model = await trained_models_repository.get_model(path=model_storage_path)
+    saved_model = await trained_models_repository.get_model(path=trained_model_path)
     assert saved_model == trained_model

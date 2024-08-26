@@ -1,7 +1,5 @@
 from typing import Optional
-from src.spira_training.apps.model_training.app.interfaces.dataset_splitter import (
-    DatasetSplitter,
-)
+from src.spira_training.shared.core.interfaces.dataset_splitter import DatasetSplitter
 from src.spira_training.shared.core.models.splitted_dataset import SplittedDataset
 
 
