@@ -1,7 +1,5 @@
 from typing import Optional
-from src.spira_training.apps.model_training.app.interfaces.model_trainer import (
-    ModelTrainer,
-)
+from src.spira_training.shared.core.interfaces.model_trainer import ModelTrainer
 from src.spira_training.shared.core.models.dataset import Dataset
 from src.spira_training.shared.core.models.trained_model import TrainedModel
 from tests.fake_trained_models_repository import make_trained_model

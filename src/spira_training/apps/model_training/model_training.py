@@ -1,7 +1,7 @@
 def main():
     # Read env variables
-    # instantiate app
-    # execute app
+    # instantiate service
+    # execute service
     pass
 
 
