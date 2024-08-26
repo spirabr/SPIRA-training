@@ -10,7 +10,7 @@ from src.spira_training.shared.ports.trained_models_repository import (
 )
 
 
-class App:
+class ModelTrainingService:
     def __init__(
         self,
         dataset_repository: DatasetRepository,

@@ -1,9 +1,11 @@
 import pytest
-from src.spira_training.apps.model_training.app.app import App
-from src.spira_training.apps.model_training.tests.fake_model_trainer import (
+from tests.fake_model_trainer import (
     FakeModelTrainer,
 )
 from src.spira_training.shared.core.models.splitted_dataset import SplittedDataset
+from src.spira_training.shared.core.services.model_training_service import (
+    ModelTrainingService,
+)
 from tests.fake_dataset_repository import FakeDatasetRepository, make_dataset
 from tests.fake_dataset_splitter import FakeDatasetSplitter
 from tests.fake_trained_models_repository import (
@@ -24,7 +26,7 @@ def make_sut(
         trained_models_repository or FakeTrainedModelsRepository()
     )
     _dataset_splitter = dataset_splitter or FakeDatasetSplitter()
-    return App(
+    return ModelTrainingService(
         dataset_repository=dataset_repository,
         model_trainer=_model_trainer,
         trained_models_repository=_trained_models_repository,
