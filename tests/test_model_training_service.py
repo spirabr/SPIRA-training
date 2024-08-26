@@ -1,14 +1,12 @@
 import pytest
-from tests.fake_model_trainer import (
-    FakeModelTrainer,
-)
 from src.spira_training.shared.core.models.splitted_dataset import SplittedDataset
 from src.spira_training.shared.core.services.model_training_service import (
     ModelTrainingService,
 )
-from tests.fake_dataset_repository import FakeDatasetRepository, make_dataset
-from tests.fake_dataset_splitter import FakeDatasetSplitter
-from tests.fake_trained_models_repository import (
+from tests.fakes.fake_dataset_repository import FakeDatasetRepository, make_dataset
+from tests.fakes.fake_dataset_splitter import FakeDatasetSplitter
+from tests.fakes.fake_model_trainer import FakeModelTrainer
+from tests.fakes.fake_trained_models_repository import (
     FakeTrainedModelsRepository,
     make_trained_model,
 )
