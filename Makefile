@@ -4,7 +4,7 @@ app:
 unit-tests: 
 	docker compose run --rm tests
 
-type-check:
+type-check-all:
 	poetry run pyright
 
 MAIN_DIFF=$(shell git diff main --diff-filter=ACM --name-only | grep ".py") 
