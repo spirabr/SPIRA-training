@@ -1,6 +1,8 @@
 from pathlib import Path
-from src.spira_training.shared.core.models.dataset import Dataset
+import random
+from src.spira_training.shared.core.models.dataset import Dataset, Label
 from src.spira_training.shared.ports.dataset_repository import DatasetRepository
+from tests.fakes.fake_audios_repository import make_audio
 
 
 class FakeDatasetRepository(DatasetRepository):
@@ -15,7 +17,7 @@ class FakeDatasetRepository(DatasetRepository):
 
 
 def make_dataset():
-    return Dataset(
-        features=[],
-        labels=[],
-    )
+    features = [make_audio() for _ in range(0, 100)]
+    all_labels = [label for label in Label]
+    features_labels = [random.choice(all_labels) for _ in features]
+    return Dataset(features=features, labels=features_labels)
