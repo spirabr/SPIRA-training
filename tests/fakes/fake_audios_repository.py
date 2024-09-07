@@ -12,4 +12,8 @@ class FakeAudiosRepository(AudiosRepository):
 
 
 def make_audios():
-    return [Audio(), Audio(), Audio()]
+    return [make_audio() for i in range(0, 3)]
+
+
+def make_audio():
+    return Audio()

@@ -1,9 +1,9 @@
-from enum import Enum
 from typing import List
 from src.spira_training.shared.core.models.audio import Audio
+from src.spira_training.shared.core.models.enum import BaseEnum
 
 
-class Label(Enum):
+class Label(BaseEnum):
     POSITIVE = 1
     NEGATIVE = 0
 
