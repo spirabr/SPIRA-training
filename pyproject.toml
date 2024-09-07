@@ -14,6 +14,9 @@ torch = "^2.4.1"
 torchaudio = "^2.4.1"
 torchvision = "^0.19.1"
 
+[tool.poetry.group.dev.dependencies]
+pyright = "^1.1.379"
+
 [tool.pytest.ini_options]
 markers = [
     "asyncio",
