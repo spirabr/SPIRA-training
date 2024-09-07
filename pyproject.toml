@@ -9,10 +9,15 @@ readme = "README.md"
 python = "^3.10"
 pydantic = "^2.9.0"
 pytest = "^8.1.1"
+pytest-asyncio = "^0.24.0"
 torch = "^2.4.1"
 torchaudio = "^2.4.1"
 torchvision = "^0.19.1"
 
+[tool.pytest.ini_options]
+markers = [
+    "asyncio",
+]
 
 [build-system]
 requires = ["poetry-core"]
