@@ -1,14 +1,5 @@
-from pathlib import Path
-
 from pydantic import BaseModel
 
-
-class AudioConfig(BaseModel):
-    patient_dataset_path: Path
-    control_dataset_path: Path
-    noise_dataset_path: Path
-    hop_length: int
-    normalize: bool
 
 class AudioProcessorType(BaseModel):
     MFCC = "mfcc"
@@ -50,9 +41,3 @@ class AudioProcessorConfig(BaseModel):
     mfcc: MFCCAudioProcessorConfig
     spectrogram: SpectrogramAudioProcessorConfig
     melspectrogram: MelspectrogramAudioProcessorConfig
-
-class FeatureEngineeringConfig(BaseModel):
-    audio: AudioConfig
-    audio_processor: AudioProcessorConfig
-
-

@@ -1,4 +1,4 @@
-from src.spira_training.apps.feature_engineering.feature_engineering_config import FeatureEngineeringConfig
+from src.spira_training.apps.feature_engineering.configs.feature_engineering_config import FeatureEngineeringConfig
 from src.spira_training.apps.model_evaluation.model_evaluation_config import ModelEvaluationConfig
 from src.spira_training.apps.model_publish.model_publish_config import ModelPublishConfig
 

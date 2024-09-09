@@ -1,8 +1,4 @@
-from pathlib import Path
-
-from pydantic import BaseModel
-
-from src.spira_training.apps.feature_engineering.feature_engineering_config import FeatureEngineeringConfig
+from src.spira_training.apps.feature_engineering.configs.feature_engineering_config import FeatureEngineeringConfig
 from src.spira_training.shared.core.interfaces.random import Random
 from src.spira_training.shared.ports import dataset_repository
 from src.spira_training.shared.ports.dataset_repository import DatasetRepository
@@ -24,22 +20,3 @@ class FeatureEngineeringService:
     def _generate_dataset(self):
         pass
 
-featureEngineeringConfig = ConfigLoader.load().feature_engineering
-featureEngineeringConfig = ConfigLoader.load("FEATURE_ENGINEERING_CONFIG")
-
-Config
-{
-    FeatureEngineeringConfig{
-        patient_dataset_path: Path
-        control_dataset_path: Path
-        noise_dataset_path: Path
-    },
-    ModelTrainerConfig{
-        model_path: Path
-        model_name: str
-        model
-    },
-    ModelEvaluateConfig{
-        model_path: Path
-    }
-}
