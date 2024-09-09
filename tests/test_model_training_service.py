@@ -2,7 +2,6 @@ from pathlib import Path
 import pytest
 from src.spira_training.shared.core.models.splitted_dataset import SplittedDataset
 from src.spira_training.shared.core.services.model_training_service import (
-    ModelTrainingConfig,
     ModelTrainingService,
 )
 from tests.fakes.fake_dataset_repository import FakeDatasetRepository, make_dataset
@@ -19,7 +18,6 @@ def make_sut(
     model_trainer=None,
     trained_models_repository=None,
     dataset_splitter=None,
-    config=None,
 ):
     dataset_repository = dataset_repository or FakeDatasetRepository()
     _model_trainer = model_trainer or FakeModelTrainer()
@@ -32,7 +30,6 @@ def make_sut(
         model_trainer=_model_trainer,
         trained_models_repository=_trained_models_repository,
         dataset_splitter=_dataset_splitter,
-        config=config,
     )
 
 
@@ -56,20 +53,18 @@ async def test_execute():
 
     await dataset_repository.save_dataset(path=dataset_path, dataset=base_dataset)
 
-    config = ModelTrainingConfig(
-        dataset_path=dataset_path,
-        trained_model_path=trained_model_path,
-    )
     sut = make_sut(
         dataset_repository=dataset_repository,
         dataset_splitter=dataset_splitter,
         trained_models_repository=trained_models_repository,
         model_trainer=model_trainer,
-        config=config,
     )
 
     # Act
-    await sut.execute()
+    await sut.execute(
+        trained_model_path=trained_model_path,
+        dataset_path=dataset_path,
+    )
 
     # Assert
     assert model_trainer.called_with(
