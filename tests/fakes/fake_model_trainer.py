@@ -10,7 +10,7 @@ class FakeModelTrainer(ModelTrainer):
         self.called_with_args = None
         self.train_result: Optional[TrainedModel] = None
 
-    async def train_model(
+    def train_model(
         self, train_dataset: Dataset, test_dataset: Dataset
     ) -> TrainedModel:
         self.called_with_args = {
