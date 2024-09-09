@@ -1,5 +1,5 @@
-from pathlib import Path
 import pytest
+from spira_training.shared.core.models.path import Path
 from src.spira_training.shared.core.models.splitted_dataset import SplittedDataset
 from src.spira_training.shared.core.services.model_training_service import (
     ModelTrainingService,

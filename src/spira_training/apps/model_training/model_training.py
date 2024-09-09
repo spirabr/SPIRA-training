@@ -1,6 +1,6 @@
 import asyncio
-from pathlib import Path
 from pydantic import BaseModel
+from spira_training.shared.core.models.path import Path
 from src.spira_training.shared.core.services.model_training_service import (
     ModelTrainingService,
 )
@@ -18,8 +18,8 @@ class ModelTrainingConfig(BaseModel):
 async def main():
     # TODO load config
     config = ModelTrainingConfig(
-        dataset_path="dataset_path",
-        trained_model_path="trained_model_path",
+        dataset_path=Path("dataset_path"),
+        trained_model_path=Path("trained_model_path"),
     )
 
     # TODO  instantiate the dependencies using configs
