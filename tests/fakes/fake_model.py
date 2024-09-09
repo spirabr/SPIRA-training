@@ -1,3 +1,4 @@
+from src.spira_training.shared.core.models.model_params import ModelParams
 from src.spira_training.shared.core.models.audio import Audio
 from src.spira_training.shared.core.models.dataset import Label
 from src.spira_training.shared.core.models.trained_model import TrainedModel
@@ -10,6 +11,15 @@ class FakeModel(TrainedModel):
     def predict(self, feature: Audio) -> Label:
         self._predicted.add(feature)
         return Label.NEGATIVE
+
+    def dump_state(self) -> dict:
+        return dict()
+
+    def load_state(self, state_dict: dict):
+        pass
+
+    def get_parameters(self) -> list[ModelParams]:
+        return list()
 
     def assert_predicted_once(self, feature: Audio):
         # return feature in self._predicted
