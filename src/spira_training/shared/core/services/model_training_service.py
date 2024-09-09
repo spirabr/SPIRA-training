@@ -1,16 +1,9 @@
-from pathlib import Path
-from pydantic import BaseModel
 from src.spira_training.shared.core.interfaces.dataset_splitter import DatasetSplitter
 from src.spira_training.shared.core.interfaces.model_trainer import ModelTrainer
 from src.spira_training.shared.ports.dataset_repository import DatasetRepository
 from src.spira_training.shared.ports.trained_models_repository import (
     TrainedModelsRepository,
 )
-
-
-class ModelTrainingConfig(BaseModel):
-    dataset_path: Path
-    trained_model_path: Path
 
 
 class ModelTrainingService:
