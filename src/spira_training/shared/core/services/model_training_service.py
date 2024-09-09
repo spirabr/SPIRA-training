@@ -1,4 +1,4 @@
-from spira_training.shared.core.models.path import Path
+from src.spira_training.shared.core.models.path import Path
 from src.spira_training.shared.core.interfaces.dataset_splitter import DatasetSplitter
 from src.spira_training.shared.core.interfaces.model_trainer import ModelTrainer
 from src.spira_training.shared.ports.dataset_repository import DatasetRepository

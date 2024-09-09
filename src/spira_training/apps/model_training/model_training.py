@@ -1,6 +1,6 @@
 import asyncio
 from pydantic import BaseModel
-from spira_training.shared.core.models.path import Path
+from src.spira_training.shared.core.models.path import Path
 from src.spira_training.shared.core.services.model_training_service import (
     ModelTrainingService,
 )

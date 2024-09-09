@@ -1,7 +1,7 @@
 from pathlib import Path as PathLibPath
+from typing import NewType
 
 __all__ = "Path"
 
 
-class Path(PathLibPath):
-    pass
+Path = NewType("Path", PathLibPath)
