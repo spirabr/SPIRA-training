@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Set
 from src.spira_training.shared.core.models.model_params import ModelParams
 from src.spira_training.shared.core.models.audio import Audio
 from src.spira_training.shared.core.models.dataset import Label
@@ -33,4 +33,15 @@ class FakeModel(TrainedModel):
         # return feature in self._predicted
         assert (
             feature in self._predicted
-        ), f"Feature {feature} not in set {self._predicted}"
+        ), f"Feature {self._feature_str(feature)} not in set {self._feature_set_str(self._predicted)}"
+
+    def _feature_str(self, feature: Audio) -> str:
+        return str(hash(feature))
+
+    def _feature_set_str(self, feature_set: Set[Audio]):
+        result = "["
+        for feature in feature_set:
+            result += self._feature_str(feature) + ", "
+        result += "]"
+
+        return result

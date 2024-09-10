@@ -31,7 +31,7 @@ async def test_returns_trained_model():
     sut = setup["sut"]
     # Act
     trained_model = await sut.train_model(
-        train_dataloader=train_dataloader, test_dataloader=test_dataloader
+        train_dataloader=train_dataloader, test_dataloader=test_dataloader, epochs=1
     )
 
     # Assert
@@ -52,9 +52,36 @@ async def test_trains_with_first_batch():
 
     # Act
     await sut.train_model(
-        train_dataloader=train_dataloader, test_dataloader=test_dataloader
+        train_dataloader=train_dataloader, test_dataloader=test_dataloader, epochs=1
     )
 
     # Assert
     for feature in train_batches[0].features:
         base_model.assert_predicted_once(feature)
+
+
+@pytest.mark.asyncio
+async def test_trains_with_batch_for_each_epoch():
+    # Arrange
+    train_batches = [make_dataset(), make_dataset(), make_dataset()]
+    train_dataloader = FakeDataloader(batches=train_batches)
+    test_dataloader = FakeDataloader(
+        batches=[make_dataset(), make_dataset(), make_dataset()]
+    )
+    epochs = 3
+
+    setup = make_setup()
+    sut = setup["sut"]
+    base_model = setup["base_model"]
+
+    # Act
+    await sut.train_model(
+        train_dataloader=train_dataloader,
+        test_dataloader=test_dataloader,
+        epochs=epochs,
+    )
+
+    # Assert
+    for batch in train_batches:
+        for feature in batch.features:
+            base_model.assert_predicted_once(feature)
