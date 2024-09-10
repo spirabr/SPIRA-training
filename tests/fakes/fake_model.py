@@ -1,3 +1,4 @@
+from typing import List
 from src.spira_training.shared.core.models.model_params import ModelParams
 from src.spira_training.shared.core.models.audio import Audio
 from src.spira_training.shared.core.models.dataset import Label
@@ -11,6 +12,13 @@ class FakeModel(TrainedModel):
     def predict(self, feature: Audio) -> Label:
         self._predicted.add(feature)
         return Label.NEGATIVE
+
+    def predict_batch(self, features_batch: List[Audio]) -> List[Label]:
+        labels = []
+        for feature in features_batch:
+            self._predicted.add(feature)
+            labels.append(Label.NEGATIVE)
+        return labels
 
     def dump_state(self) -> dict:
         return dict()

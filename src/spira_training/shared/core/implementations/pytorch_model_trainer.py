@@ -14,9 +14,6 @@ class PytorchModelTrainer(ModelTrainer):
     async def train_model(
         self, train_dataset: Dataset, test_dataset: Dataset
     ) -> TrainedModel:
-        for i in range(len(train_dataset.features)):
-            feature = train_dataset.features[i]
-
-            prediction = self._model.predict(feature=feature)
+        labels = self._model.predict_batch(train_dataset.features)
 
         return self._model
