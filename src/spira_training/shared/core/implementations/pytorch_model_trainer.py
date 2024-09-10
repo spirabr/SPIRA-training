@@ -1,5 +1,5 @@
+from src.spira_training.shared.core.interfaces.dataloader import Dataloader
 from src.spira_training.shared.core.interfaces.model_trainer import ModelTrainer
-from src.spira_training.shared.core.models.dataset import Dataset
 from src.spira_training.shared.core.models.trained_model import TrainedModel
 
 
@@ -12,8 +12,9 @@ class PytorchModelTrainer(ModelTrainer):
         self._model = base_model
 
     async def train_model(
-        self, train_dataset: Dataset, test_dataset: Dataset
+        self, train_dataloader: Dataloader, test_dataloader: Dataloader
     ) -> TrainedModel:
-        labels = self._model.predict_batch(train_dataset.features)
+        train_batch = train_dataloader.get_batch()
+        labels = self._model.predict_batch(train_batch.features)
 
         return self._model
