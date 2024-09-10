@@ -1,5 +1,4 @@
 from typing_extensions import TypedDict
-import pytest
 from src.spira_training.shared.core.implementations.pytorch_model_trainer import (
     PytorchModelTrainer,
 )
@@ -20,8 +19,7 @@ def make_setup() -> SetupData:
     return {"sut": PytorchModelTrainer(base_model=base_model), "base_model": base_model}
 
 
-@pytest.mark.asyncio
-async def test_returns_trained_model():
+def test_returns_trained_model():
     # Arrange
     train_dataloader = FakeDataloader(batches=[make_dataset()])
     test_dataloader = FakeDataloader(batches=[make_dataset()])
@@ -30,7 +28,7 @@ async def test_returns_trained_model():
     setup = make_setup()
     sut = setup["sut"]
     # Act
-    trained_model = await sut.train_model(
+    trained_model = sut.train_model(
         train_dataloader=train_dataloader, test_dataloader=test_dataloader, epochs=1
     )
 
@@ -40,8 +38,7 @@ async def test_returns_trained_model():
     assert Label.has_value(prediction_result.value)
 
 
-@pytest.mark.asyncio
-async def test_trains_with_first_batch():
+def test_trains_with_first_batch():
     # Arrange
     train_batches = [make_dataset()]
     train_dataloader = FakeDataloader(batches=train_batches)
@@ -51,7 +48,7 @@ async def test_trains_with_first_batch():
     base_model = setup["base_model"]
 
     # Act
-    await sut.train_model(
+    sut.train_model(
         train_dataloader=train_dataloader, test_dataloader=test_dataloader, epochs=1
     )
 
@@ -60,8 +57,7 @@ async def test_trains_with_first_batch():
         base_model.assert_predicted_once(feature)
 
 
-@pytest.mark.asyncio
-async def test_trains_with_batch_for_each_epoch():
+def test_trains_with_batch_for_each_epoch():
     # Arrange
     train_batches = [make_dataset(), make_dataset(), make_dataset()]
     train_dataloader = FakeDataloader(batches=train_batches)
@@ -75,7 +71,7 @@ async def test_trains_with_batch_for_each_epoch():
     base_model = setup["base_model"]
 
     # Act
-    await sut.train_model(
+    sut.train_model(
         train_dataloader=train_dataloader,
         test_dataloader=test_dataloader,
         epochs=epochs,
