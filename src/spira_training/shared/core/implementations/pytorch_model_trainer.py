@@ -16,13 +16,15 @@ class PytorchModelTrainer(ModelTrainer):
         self, train_dataloader: Dataloader, test_dataloader: Dataloader, epochs: int
     ) -> TrainedModel:
         for _ in range(0, epochs):
-            self._do_epoch(
+            self._execute_training_epoch(
                 train_batches=train_dataloader.get_batches(),
                 test_batches=test_dataloader.get_batches(),
             )
 
         return self._model
 
-    def _do_epoch(self, train_batches: Sequence[Batch], test_batches: Sequence[Batch]):
+    def _execute_training_epoch(
+        self, train_batches: Sequence[Batch], test_batches: Sequence[Batch]
+    ):
         for train_batch in train_batches:
             labels = self._model.predict_batch(train_batch.features)
