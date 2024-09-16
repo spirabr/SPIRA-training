@@ -1,13 +1,9 @@
 from src.spira_training.apps.feature_engineering.configs.feature_engineering_config import FeatureEngineeringConfig
 from src.spira_training.shared.core.interfaces.random import Random
 from src.spira_training.shared.ports import dataset_repository
+from src.spira_training.shared.ports.audios_repository import AudiosRepository
 from src.spira_training.shared.ports.dataset_repository import DatasetRepository
 from src.spira_training.shared.ports.valid_path_reader import ValidPathReader
-
-
-class AudioRepository:
-    pass
-
 
 class FeatureEngineeringService:
     def __init__(
@@ -16,13 +12,13 @@ class FeatureEngineeringService:
             randomizer: Random,
             dataset_repository: DatasetRepository,
             valid_path_reader: ValidPathReader,
-            audio_repository: AudioRepository
+            audios_repository: AudiosRepository
     ):
         self.config = config
         self.randomizer = randomizer
         self.dataset_repository = dataset_repository
         self.valid_path_reader = valid_path_reader
-        self.audio_repository = audio_repository
+        self.audios_repository = audios_repository
 
     def execute(self) -> None:
         patients_inputs, controls_inputs, noises = self._load_data()
@@ -42,7 +38,7 @@ class FeatureEngineeringService:
         return audio_data
 
     def _load_audio_from_paths(self, paths):
-        return self.audio_repository.load(
+        return self.audios_repository.load(
             paths,
             self.config.audio.hop_length,
             self.config.audio.normalize
