@@ -1,6 +1,7 @@
 from typing import List, Sequence
 from src.spira_training.shared.core.models.batch import Batch
 from src.spira_training.shared.core.interfaces.dataloader import Dataloader
+from tests.fakes.fake_dataset_repository import make_dataset
 
 
 class FakeDataloader(Dataloader):
@@ -9,3 +10,11 @@ class FakeDataloader(Dataloader):
 
     def get_batches(self) -> Sequence[Batch]:
         return self._batches
+
+
+def make_batches():
+    return [make_dataset(), make_dataset(), make_dataset()]
+
+
+def make_dataloader():
+    return FakeDataloader(batches=make_batches())
