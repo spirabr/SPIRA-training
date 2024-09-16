@@ -1,7 +1,7 @@
 from src.spira_training.shared.adapters.CSVValidPathReader import CSVValidPathReader
 from src.spira_training.shared.adapters.JsonConfigLoader import JsonConfigLoader
 from src.spira_training.shared.core.services.feature_engineering_service import FeatureEngineeringService, \
-    AudioRepository
+    AudiosRepository
 from src.spira_training.shared.core.services.randomizer import Randomizer
 from tests.fakes.fake_dataset_repository import FakeDatasetRepository
 
@@ -11,9 +11,9 @@ def main():
     randomizer = Randomizer.initialize_random()
     dataset_repository = FakeDatasetRepository()
     csv_valid_path_reader = CSVValidPathReader()
-    audio_repository = AudioRepository()
+    audios_repository = AudiosRepository()
 
-    service = FeatureEngineeringService(config, randomizer, dataset_repository, csv_valid_path_reader, audio_repository)
+    service = FeatureEngineeringService(config, randomizer, dataset_repository, csv_valid_path_reader, audios_repository)
 
     service.execute()
 
