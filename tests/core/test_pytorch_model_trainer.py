@@ -9,6 +9,7 @@ from tests.fakes.fake_audios_repository import make_audio
 from tests.fakes.fake_dataloader import FakeDataloader
 from tests.fakes.fake_dataset_repository import make_dataset
 from tests.fakes.fake_model import FakeModel
+from tests.fakes.fake_optimizer import FakeOptimizer
 
 
 class SetupData(TypedDict):
@@ -18,6 +19,7 @@ class SetupData(TypedDict):
     test_batches: List[Batch]
     train_dataloader: FakeDataloader
     test_dataloader: FakeDataloader
+    optimizer: FakeOptimizer
 
 
 def make_setup() -> SetupData:
@@ -26,14 +28,16 @@ def make_setup() -> SetupData:
     test_batches = [make_dataset(), make_dataset(), make_dataset()]
     train_dataloader = FakeDataloader(batches=train_batches)
     test_dataloader = FakeDataloader(batches=[make_dataset(), make_dataset()])
+    optimizer = FakeOptimizer()
 
     return {
-        "sut": PytorchModelTrainer(base_model=base_model),
+        "sut": PytorchModelTrainer(base_model=base_model, optimizer=optimizer),
         "base_model": base_model,
         "test_batches": test_batches,
         "train_batches": train_batches,
         "train_dataloader": train_dataloader,
         "test_dataloader": test_dataloader,
+        "optimizer": optimizer,
     }
 
 
@@ -78,7 +82,6 @@ def test_trains_with_each_batch_once():
 
 def test_trains_with_each_batch_for_each_epoch():
     # Arrange
-
     setup = make_setup()
     sut = setup["sut"]
     base_model = setup["base_model"]
@@ -98,3 +101,21 @@ def test_trains_with_each_batch_for_each_epoch():
     for batch in train_batches:
         for feature in batch.features:
             base_model.assert_predicted_times(feature=feature, times=epochs)
+
+
+def test_executes_optimizer_each_batch():
+    # Arrange
+    setup = make_setup()
+    sut = setup["sut"]
+    train_batches = setup["train_batches"]
+    train_dataloader = setup["train_dataloader"]
+    test_dataloader = setup["test_dataloader"]
+    optimizer = setup["optimizer"]
+
+    # Act
+    sut.train_model(
+        train_dataloader=train_dataloader, test_dataloader=test_dataloader, epochs=1
+    )
+
+    # Assert
+    optimizer.assert_step_called_times(times=len(train_batches))
