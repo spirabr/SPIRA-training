@@ -38,11 +38,11 @@ def test_returns_trained_model():
     assert Label.has_value(prediction_result.value)
 
 
-def test_trains_with_first_batch():
+def test_trains_with_each_batch_once():
     # Arrange
-    train_batches = [make_dataset()]
+    train_batches = [make_dataset(), make_dataset()]
     train_dataloader = FakeDataloader(batches=train_batches)
-    test_dataloader = FakeDataloader(batches=[make_dataset()])
+    test_dataloader = FakeDataloader(batches=[make_dataset(), make_dataset()])
     setup = make_setup()
     sut = setup["sut"]
     base_model = setup["base_model"]
@@ -53,11 +53,12 @@ def test_trains_with_first_batch():
     )
 
     # Assert
-    for feature in train_batches[0].features:
-        base_model.assert_predicted_once(feature)
+    for batch in train_batches:
+        for feature in batch.features:
+            base_model.assert_predicted_once(feature)
 
 
-def test_trains_with_batch_for_each_epoch():
+def test_trains_with_each_batch_for_each_epoch():
     # Arrange
     train_batches = [make_dataset(), make_dataset(), make_dataset()]
     train_dataloader = FakeDataloader(batches=train_batches)
@@ -80,4 +81,4 @@ def test_trains_with_batch_for_each_epoch():
     # Assert
     for batch in train_batches:
         for feature in batch.features:
-            base_model.assert_predicted_once(feature)
+            base_model.assert_predicted_times(feature=feature, times=epochs)
