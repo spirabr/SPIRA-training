@@ -26,6 +26,7 @@ class ModelTrainingService:
         trained_model = self._model_trainer.train_model(
             train_dataset=splitted_dataset.train_dataset,
             test_dataset=splitted_dataset.test_dataset,
+            epochs=1,
         )
         await self._trained_models_repository.save_model(
             trained_model, trained_model_path

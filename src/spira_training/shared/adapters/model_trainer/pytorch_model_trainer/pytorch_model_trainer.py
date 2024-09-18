@@ -1,7 +1,10 @@
 from typing import Sequence
 
+
+from src.spira_training.shared.core.models.dataset import Dataset
+
+from .interfaces.dataloader_factory import DataloaderFactory
 from .interfaces.optimizer import Optimizer
-from .interfaces.dataloader import Dataloader
 from src.spira_training.shared.core.models.batch import Batch
 from src.spira_training.shared.ports.model_trainer import ModelTrainer
 from src.spira_training.shared.core.models.trained_model import TrainedModel
@@ -11,13 +14,28 @@ BaseModel = TrainedModel
 
 
 class PytorchModelTrainer(ModelTrainer):
-    def __init__(self, base_model: BaseModel, optimizer: Optimizer) -> None:
+    def __init__(
+        self,
+        base_model: BaseModel,
+        optimizer: Optimizer,
+        train_dataloader_factory: DataloaderFactory,
+        test_dataloader_factory: DataloaderFactory,
+    ) -> None:
         self._model = base_model
         self._optimizer = optimizer
+        self._train_dataloader_factory = train_dataloader_factory
+        self._test_dataloader_factory = test_dataloader_factory
 
     def train_model(
-        self, train_dataloader: Dataloader, test_dataloader: Dataloader, epochs: int
+        self, train_dataset: Dataset, test_dataset: Dataset, epochs: int
     ) -> TrainedModel:
+        train_dataloader = self._train_dataloader_factory.make_dataloader(
+            dataset=train_dataset
+        )
+        test_dataloader = self._test_dataloader_factory.make_dataloader(
+            dataset=test_dataset
+        )
+
         for _ in range(0, epochs):
             self._execute_training_epoch(
                 train_batches=train_dataloader.get_batches(),

@@ -11,7 +11,7 @@ class FakeModelTrainer(ModelTrainer):
         self.train_result: Optional[TrainedModel] = None
 
     def train_model(
-        self, train_dataset: Dataset, test_dataset: Dataset
+        self, train_dataset: Dataset, test_dataset: Dataset, epochs: int
     ) -> TrainedModel:
         self.called_with_args = {
             "train_dataset": train_dataset,
