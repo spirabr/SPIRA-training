@@ -1,4 +1,6 @@
 from typing import Sequence
+
+from src.spira_training.shared.core.interfaces.optimizer import Optimizer
 from src.spira_training.shared.core.models.batch import Batch
 from src.spira_training.shared.core.interfaces.dataloader import Dataloader
 from src.spira_training.shared.core.interfaces.model_trainer import ModelTrainer
@@ -9,8 +11,9 @@ BaseModel = TrainedModel
 
 
 class PytorchModelTrainer(ModelTrainer):
-    def __init__(self, base_model: BaseModel) -> None:
+    def __init__(self, base_model: BaseModel, optimizer: Optimizer) -> None:
         self._model = base_model
+        self._optimizer = optimizer
 
     def train_model(
         self, train_dataloader: Dataloader, test_dataloader: Dataloader, epochs: int
@@ -28,3 +31,4 @@ class PytorchModelTrainer(ModelTrainer):
     ):
         for train_batch in train_batches:
             labels = self._model.predict_batch(train_batch.features)
+            self._optimizer.step()

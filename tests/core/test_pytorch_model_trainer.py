@@ -4,29 +4,43 @@ from src.spira_training.shared.core.implementations.pytorch_model_trainer import
 )
 from src.spira_training.shared.core.models.dataset import Label
 from tests.fakes.fake_audios_repository import make_audio
-from tests.fakes.fake_dataloader import FakeDataloader
-from tests.fakes.fake_dataset_repository import make_dataset
+from tests.fakes.fake_dataloader import FakeDataloader, make_dataloader
 from tests.fakes.fake_model import FakeModel
+from tests.fakes.fake_optimizer import FakeOptimizer
 
 
 class SetupData(TypedDict):
     sut: PytorchModelTrainer
     base_model: FakeModel
+    train_dataloader: FakeDataloader
+    test_dataloader: FakeDataloader
+    optimizer: FakeOptimizer
 
 
 def make_setup() -> SetupData:
     base_model = FakeModel()
-    return {"sut": PytorchModelTrainer(base_model=base_model), "base_model": base_model}
+    train_dataloader = make_dataloader()
+    test_dataloader = make_dataloader()
+    optimizer = FakeOptimizer()
+
+    return {
+        "sut": PytorchModelTrainer(base_model=base_model, optimizer=optimizer),
+        "base_model": base_model,
+        "train_dataloader": train_dataloader,
+        "test_dataloader": test_dataloader,
+        "optimizer": optimizer,
+    }
 
 
 def test_returns_trained_model():
     # Arrange
-    train_dataloader = FakeDataloader(batches=[make_dataset()])
-    test_dataloader = FakeDataloader(batches=[make_dataset()])
     validation_feature = make_audio()
 
     setup = make_setup()
     sut = setup["sut"]
+    train_dataloader = setup["train_dataloader"]
+    test_dataloader = setup["test_dataloader"]
+
     # Act
     trained_model = sut.train_model(
         train_dataloader=train_dataloader, test_dataloader=test_dataloader, epochs=1
@@ -40,36 +54,30 @@ def test_returns_trained_model():
 
 def test_trains_with_each_batch_once():
     # Arrange
-    train_batches = [make_dataset(), make_dataset()]
-    train_dataloader = FakeDataloader(batches=train_batches)
-    test_dataloader = FakeDataloader(batches=[make_dataset(), make_dataset()])
     setup = make_setup()
     sut = setup["sut"]
     base_model = setup["base_model"]
-
+    train_dataloader = setup["train_dataloader"]
+    test_dataloader = setup["test_dataloader"]
     # Act
     sut.train_model(
         train_dataloader=train_dataloader, test_dataloader=test_dataloader, epochs=1
     )
 
     # Assert
-    for batch in train_batches:
+    for batch in train_dataloader.get_batches():
         for feature in batch.features:
             base_model.assert_predicted_once(feature)
 
 
 def test_trains_with_each_batch_for_each_epoch():
     # Arrange
-    train_batches = [make_dataset(), make_dataset(), make_dataset()]
-    train_dataloader = FakeDataloader(batches=train_batches)
-    test_dataloader = FakeDataloader(
-        batches=[make_dataset(), make_dataset(), make_dataset()]
-    )
-    epochs = 3
-
     setup = make_setup()
     sut = setup["sut"]
     base_model = setup["base_model"]
+    train_dataloader = setup["train_dataloader"]
+    test_dataloader = setup["test_dataloader"]
+    epochs = 3
 
     # Act
     sut.train_model(
@@ -79,6 +87,23 @@ def test_trains_with_each_batch_for_each_epoch():
     )
 
     # Assert
-    for batch in train_batches:
+    for batch in train_dataloader.get_batches():
         for feature in batch.features:
             base_model.assert_predicted_times(feature=feature, times=epochs)
+
+
+def test_executes_optimizer_each_batch():
+    # Arrange
+    setup = make_setup()
+    sut = setup["sut"]
+    train_dataloader = setup["train_dataloader"]
+    test_dataloader = setup["test_dataloader"]
+    optimizer = setup["optimizer"]
+
+    # Act
+    sut.train_model(
+        train_dataloader=train_dataloader, test_dataloader=test_dataloader, epochs=1
+    )
+
+    # Assert
+    optimizer.assert_step_called_times(times=len(train_dataloader.get_batches()))
