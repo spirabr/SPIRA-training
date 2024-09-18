@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 
-from src.spira_training.shared.core.interfaces.dataloader import Dataloader
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.dataloader import (
+    Dataloader,
+)
 from src.spira_training.shared.core.models.trained_model import TrainedModel
 
 

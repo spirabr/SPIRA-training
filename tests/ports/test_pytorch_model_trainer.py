@@ -1,5 +1,5 @@
 from typing_extensions import TypedDict
-from src.spira_training.shared.core.implementations.pytorch_model_trainer import (
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_model_trainer import (
     PytorchModelTrainer,
 )
 from src.spira_training.shared.core.models.dataset import Label

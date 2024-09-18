@@ -1,9 +1,9 @@
 from typing import Sequence
 
-from src.spira_training.shared.core.interfaces.optimizer import Optimizer
+from .interfaces.optimizer import Optimizer
+from .interfaces.dataloader import Dataloader
 from src.spira_training.shared.core.models.batch import Batch
-from src.spira_training.shared.core.interfaces.dataloader import Dataloader
-from src.spira_training.shared.core.interfaces.model_trainer import ModelTrainer
+from src.spira_training.shared.ports.model_trainer import ModelTrainer
 from src.spira_training.shared.core.models.trained_model import TrainedModel
 
 
