@@ -1,4 +1,6 @@
-from src.spira_training.shared.core.interfaces.optimizer import Optimizer
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.optimizer import (
+    Optimizer,
+)
 
 
 class FakeOptimizer(Optimizer):

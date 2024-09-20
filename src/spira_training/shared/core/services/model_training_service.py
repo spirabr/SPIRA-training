@@ -1,6 +1,6 @@
 from src.spira_training.shared.core.models.path import Path
 from src.spira_training.shared.core.interfaces.dataset_splitter import DatasetSplitter
-from src.spira_training.shared.core.interfaces.model_trainer import ModelTrainer
+from src.spira_training.shared.ports.model_trainer import ModelTrainer
 from src.spira_training.shared.ports.dataset_repository import DatasetRepository
 from src.spira_training.shared.ports.trained_models_repository import (
     TrainedModelsRepository,
@@ -26,6 +26,7 @@ class ModelTrainingService:
         trained_model = self._model_trainer.train_model(
             train_dataset=splitted_dataset.train_dataset,
             test_dataset=splitted_dataset.test_dataset,
+            epochs=1,
         )
         await self._trained_models_repository.save_model(
             trained_model, trained_model_path

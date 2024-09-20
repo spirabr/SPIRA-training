@@ -1,6 +1,9 @@
 from typing import List, Sequence
+
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.dataloader import (
+    Dataloader,
+)
 from src.spira_training.shared.core.models.batch import Batch
-from src.spira_training.shared.core.interfaces.dataloader import Dataloader
 from tests.fakes.fake_dataset_repository import make_dataset
 
 
