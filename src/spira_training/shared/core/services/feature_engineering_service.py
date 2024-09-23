@@ -7,7 +7,6 @@ from src.spira_training.shared.ports.audios_repository import AudiosRepository
 from src.spira_training.shared.ports.dataset_repository import DatasetRepository
 from src.spira_training.shared.ports.file_reader import FileReader
 from src.spira_training.shared.ports.path_validator import PathValidator
-from src.spira_training.shared.ports.valid_path_reader import ValidPathReader
 
 class FeatureEngineeringService:
     def __init__(
@@ -15,7 +14,6 @@ class FeatureEngineeringService:
             config: FeatureEngineeringConfig,
             randomizer: Random,
             dataset_repository: DatasetRepository,
-            valid_path_reader: ValidPathReader,
             audios_repository: AudiosRepository,
             file_reader: FileReader,
             path_validator: PathValidator
@@ -23,7 +21,6 @@ class FeatureEngineeringService:
         self.config = config
         self.randomizer = randomizer
         self.dataset_repository = dataset_repository
-        self.valid_path_reader = valid_path_reader
         self.audios_repository = audios_repository
         self.file_reader = file_reader
         self.path_validator = path_validator
