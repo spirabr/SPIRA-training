@@ -1,6 +1,6 @@
 from typing import Sequence
 
-from src.spira_training.shared.core.models.event import TrainLossEvent
+from src.spira_training.shared.core.models.event import TestLossEvent, TrainLossEvent
 
 from src.spira_training.shared.ports.train_logger import TrainLogger
 
@@ -26,6 +26,7 @@ class PytorchModelTrainer(ModelTrainer):
         train_dataloader_factory: DataloaderFactory,
         test_dataloader_factory: DataloaderFactory,
         train_loss_calculator: LossCalculator,
+        test_loss_calculator: LossCalculator,
         train_logger: TrainLogger,
     ) -> None:
         self._model = base_model
@@ -33,6 +34,7 @@ class PytorchModelTrainer(ModelTrainer):
         self._train_dataloader_factory = train_dataloader_factory
         self._test_dataloader_factory = test_dataloader_factory
         self._train_loss_calculator = train_loss_calculator
+        self._test_loss_calculator = test_loss_calculator
         self._train_logger = train_logger
 
     def train_model(
@@ -68,3 +70,14 @@ class PytorchModelTrainer(ModelTrainer):
             )
             self._train_loss_calculator.recalculate_weights()
             self._optimizer.step()
+
+        for test_batch in test_batches:
+            test_predictions = self._model.predict_batch(test_batch.features)
+            test_loss = self._test_loss_calculator.calculate_loss(
+                predictions=test_predictions, labels=test_batch.labels
+            )
+            self._train_logger.log_event(
+                TestLossEvent(
+                    loss=test_loss,
+                )
+            )

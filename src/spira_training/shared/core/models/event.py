@@ -9,6 +9,7 @@ class BaseEvent(BaseModel): ...
 
 class EventTypeEnum(BaseEnum):
     TRAIN_LOSS = "train_loss"
+    TEST_LOSS = "test_loss"
 
 
 class TrainLossEvent(BaseEvent):
@@ -16,4 +17,9 @@ class TrainLossEvent(BaseEvent):
     type: Literal[EventTypeEnum.TRAIN_LOSS] = EventTypeEnum.TRAIN_LOSS
 
 
-Event = TrainLossEvent
+class TestLossEvent(BaseEvent):
+    loss: Loss
+    type: Literal[EventTypeEnum.TEST_LOSS] = EventTypeEnum.TEST_LOSS
+
+
+Event = TrainLossEvent | TestLossEvent

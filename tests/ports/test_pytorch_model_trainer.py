@@ -29,6 +29,7 @@ def make_setup() -> SetupData:
     train_dataloader_factory = FakeDataloaderFactory()
     test_dataloader_factory = FakeDataloaderFactory()
     train_loss_calculator = FakeLossCalculator().with_fixed_loss(make_loss())
+    test_loss_calculator = FakeLossCalculator().with_fixed_loss(make_loss())
     train_logger = FakeTrainLogger()
 
     return {
@@ -38,6 +39,7 @@ def make_setup() -> SetupData:
             train_dataloader_factory=train_dataloader_factory,
             test_dataloader_factory=test_dataloader_factory,
             train_loss_calculator=train_loss_calculator,
+            test_loss_calculator=test_loss_calculator,
             train_logger=train_logger,
         ),
         "base_model": base_model,
@@ -45,6 +47,7 @@ def make_setup() -> SetupData:
         "train_dataloader_factory": train_dataloader_factory,
         "test_dataloader_factory": test_dataloader_factory,
         "train_loss_calculator": train_loss_calculator,
+        "test_loss_calculator": test_loss_calculator,
         "train_logger": train_logger,
     }
 
@@ -157,3 +160,33 @@ def test_recalculates_weights_each_batch():
     # Assert
     batch_count = len(train_dataloader_factory.dataloader.get_batches())
     train_loss_calculator.assert_recalculate_weights_was_called(times=batch_count)
+
+
+def test_logs_test_loss_each_test_batch():
+    # Arrange
+    setup = make_setup()
+    sut = setup["sut"]
+    train_logger = setup["train_logger"]
+    test_loss_calculator = setup["test_loss_calculator"]
+    test_dataloader_factory = setup["test_dataloader_factory"]
+    fixed_loss = make_loss()
+    test_loss_calculator.with_fixed_loss(fixed_loss)
+
+    # Act
+    sut.train_model(
+        train_dataset=make_dataset(),
+        test_dataset=make_dataset(),
+        epochs=1,
+    )
+
+    # Assert
+    test_loss_events = list(
+        filter(
+            lambda event: EventTypeEnum.TEST_LOSS == event.type,
+            train_logger.logged_events,
+        )
+    )
+    batches = test_dataloader_factory.dataloader.get_batches()
+    assert len(test_loss_events) == len(batches)
+    for event in test_loss_events:
+        assert event.loss == fixed_loss
