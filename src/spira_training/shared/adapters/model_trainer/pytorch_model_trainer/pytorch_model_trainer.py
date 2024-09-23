@@ -59,25 +59,31 @@ class PytorchModelTrainer(ModelTrainer):
         self, train_batches: Sequence[Batch], test_batches: Sequence[Batch]
     ):
         for train_batch in train_batches:
-            predictions = self._model.predict_batch(train_batch.features)
-            loss = self._train_loss_calculator.calculate_loss(
-                predictions=predictions, labels=train_batch.labels
-            )
-            self._train_logger.log_event(
-                TrainLossEvent(
-                    loss=loss,
-                )
-            )
-            self._train_loss_calculator.recalculate_weights()
-            self._optimizer.step()
+            self._execute_training_batch(train_batch)
 
         for test_batch in test_batches:
-            test_predictions = self._model.predict_batch(test_batch.features)
-            test_loss = self._test_loss_calculator.calculate_loss(
-                predictions=test_predictions, labels=test_batch.labels
+            self._execute_test_batch(test_batch)
+
+    def _execute_training_batch(self, batch: Batch):
+        predictions = self._model.predict_batch(batch.features)
+        loss = self._train_loss_calculator.calculate_loss(
+            predictions=predictions, labels=batch.labels
+        )
+        self._train_logger.log_event(
+            TrainLossEvent(
+                loss=loss,
             )
-            self._train_logger.log_event(
-                TestLossEvent(
-                    loss=test_loss,
-                )
+        )
+        self._train_loss_calculator.recalculate_weights()
+        self._optimizer.step()
+
+    def _execute_test_batch(self, batch: Batch):
+        predictions = self._model.predict_batch(batch.features)
+        loss = self._test_loss_calculator.calculate_loss(
+            predictions=predictions, labels=batch.labels
+        )
+        self._train_logger.log_event(
+            TestLossEvent(
+                loss=loss,
             )
+        )
