@@ -1,10 +1,15 @@
 from typing import Sequence
 
+from src.spira_training.shared.core.models.event import TrainLossEvent
+
+from src.spira_training.shared.ports.train_logger import TrainLogger
+
 
 from src.spira_training.shared.core.models.dataset import Dataset
 
 from .interfaces.dataloader_factory import DataloaderFactory
 from .interfaces.optimizer import Optimizer
+from .interfaces.loss_calculator import LossCalculator
 from src.spira_training.shared.core.models.batch import Batch
 from src.spira_training.shared.ports.model_trainer import ModelTrainer
 from src.spira_training.shared.core.models.trained_model import TrainedModel
@@ -20,11 +25,15 @@ class PytorchModelTrainer(ModelTrainer):
         optimizer: Optimizer,
         train_dataloader_factory: DataloaderFactory,
         test_dataloader_factory: DataloaderFactory,
+        train_loss_calculator: LossCalculator,
+        train_logger: TrainLogger,
     ) -> None:
         self._model = base_model
         self._optimizer = optimizer
         self._train_dataloader_factory = train_dataloader_factory
         self._test_dataloader_factory = test_dataloader_factory
+        self._train_loss_calculator = train_loss_calculator
+        self._train_logger = train_logger
 
     def train_model(
         self, train_dataset: Dataset, test_dataset: Dataset, epochs: int
@@ -48,5 +57,13 @@ class PytorchModelTrainer(ModelTrainer):
         self, train_batches: Sequence[Batch], test_batches: Sequence[Batch]
     ):
         for train_batch in train_batches:
-            labels = self._model.predict_batch(train_batch.features)
+            predictions = self._model.predict_batch(train_batch.features)
+            loss = self._train_loss_calculator.calculate_loss(
+                predictions=predictions, labels=train_batch.labels
+            )
+            self._train_logger.log_event(
+                TrainLossEvent(
+                    loss=loss,
+                )
+            )
             self._optimizer.step()
