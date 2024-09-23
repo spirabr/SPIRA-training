@@ -11,3 +11,6 @@ class LossCalculator(ABC):
     def calculate_loss(
         self, predictions: Sequence[Label], labels: Sequence[Label]
     ) -> Loss: ...
+
+    @abstractmethod
+    def recalculate_weights(self): ...

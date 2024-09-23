@@ -28,7 +28,7 @@ def make_setup() -> SetupData:
     optimizer = FakeOptimizer()
     train_dataloader_factory = FakeDataloaderFactory()
     test_dataloader_factory = FakeDataloaderFactory()
-    train_loss_calculator = FakeLossCalculator()
+    train_loss_calculator = FakeLossCalculator().with_fixed_loss(make_loss())
     train_logger = FakeTrainLogger()
 
     return {
@@ -142,3 +142,18 @@ def test_logs_loss_each_batch():
     assert len(train_loss_events) == batch_count
     for event in train_loss_events:
         assert event.loss == fixed_loss
+
+
+def test_recalculates_weights_each_batch():
+    # Arrange
+    setup = make_setup()
+    sut = setup["sut"]
+    train_dataloader_factory = setup["train_dataloader_factory"]
+    train_loss_calculator = setup["train_loss_calculator"]
+
+    # Act
+    sut.train_model(train_dataset=make_dataset(), test_dataset=make_dataset(), epochs=1)
+
+    # Assert
+    batch_count = len(train_dataloader_factory.dataloader.get_batches())
+    train_loss_calculator.assert_recalculate_weights_was_called(times=batch_count)

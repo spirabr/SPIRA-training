@@ -66,4 +66,5 @@ class PytorchModelTrainer(ModelTrainer):
                     loss=loss,
                 )
             )
+            self._train_loss_calculator.recalculate_weights()
             self._optimizer.step()
