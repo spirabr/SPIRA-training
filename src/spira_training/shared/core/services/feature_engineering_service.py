@@ -2,7 +2,7 @@ from pathlib import Path
 
 from src.spira_training.apps.feature_engineering.configs.feature_engineering_config import FeatureEngineeringConfig
 from src.spira_training.shared.core.interfaces.random import Random
-from src.spira_training.shared.ports import dataset_repository
+from src.spira_training.shared.core.models.valid_path import ValidPath
 from src.spira_training.shared.ports.audios_repository import AudiosRepository
 from src.spira_training.shared.ports.dataset_repository import DatasetRepository
 from src.spira_training.shared.ports.file_reader import FileReader
@@ -25,10 +25,10 @@ class FeatureEngineeringService:
         self.file_reader = file_reader
         self.path_validator = path_validator
 
-    def execute(self) -> None:
+    async def execute(self, save_dataset_path: Path) -> None:
         patients_inputs, controls_inputs, noises = self._load_data()
-        dataset = self._generate_dataset(self.config, self.randomizer, patients_inputs, controls_inputs, noises)
-        dataset_repository.save_dataset(dataset, self.config.paths.dataset)
+        dataset = self._generate_dataset()
+        await self.dataset_repository.save_dataset(dataset, save_dataset_path)
 
     def _load_data(self):
         patients_inputs = self._load_audio_data(self.config.audio.dataset_paths.patients_csv)
@@ -41,16 +41,12 @@ class FeatureEngineeringService:
         validated_csv_path = self.path_validator.validate_path(csv_path)
         file_paths = self.file_reader.read(str(validated_csv_path))
         validated_file_paths = [self.path_validator.validate_path(Path(path)) for path in file_paths]
-        audio_data = self._load_audio_from_paths(validated_file_paths)
+        audio_data = [self._load_audio_from_paths(path) for path in validated_file_paths]
 
         return audio_data
 
-    def _load_audio_from_paths(self, paths):
-        return self.audios_repository.load(
-            paths,
-            self.config.audio.hop_length,
-            self.config.audio.normalize
-        )
+    def _load_audio_from_paths(self, path: ValidPath):
+        return self.audios_repository.get_audio(str(path))
 
     def _generate_dataset(self):
         pass
