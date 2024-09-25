@@ -8,12 +8,14 @@ from tests.fakes.fake_audios_repository import make_audio
 class FakeDatasetRepository(DatasetRepository):
     def __init__(self):
         self._datasets = {}
+        self.save_dataset_called = False
 
     async def get_dataset(self, path: Path) -> Dataset:
         return self._datasets[path]
 
     async def save_dataset(self, dataset: Dataset, path: Path) -> None:
         self._datasets[path] = dataset
+        self.save_dataset_called = True
 
 
 def make_dataset():

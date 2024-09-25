@@ -1,12 +1,13 @@
-from pydantic import BaseModel
+from typing import ClassVar
 
+from pydantic import BaseModel, ConfigDict
 
 class AudioProcessorType(BaseModel):
-    MFCC = "mfcc"
-    SPECTROGRAM = "spectrogram"
-    MELSPECTROGRAM = "melspectrogram"
+    MFCC: ClassVar[str] = "mfcc"
+    SPECTROGRAM: ClassVar[str] = "spectrogram"
+    MELSPECTROGRAM: ClassVar[str] = "melspectrogram"
 
-class MFCCAudioProcessorConfig:
+class MFCCAudioProcessorConfig(BaseModel):
     sample_rate: int
     num_mels: int
     num_mfcc: int
@@ -14,30 +15,38 @@ class MFCCAudioProcessorConfig:
     n_fft: int
     win_length: int
 
-class SpectrogramAudioProcessorConfig:
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+class SpectrogramAudioProcessorConfig(BaseModel):
     sample_rate: int
     num_mels: int
     mel_fmin: float
-    mel_fmax: None
+    mel_fmax: float
     num_mfcc: int
     log_mels: bool
     n_fft: int
     num_freq: int
     win_length: int
 
-class MelspectrogramAudioProcessorConfig:
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+class MelspectrogramAudioProcessorConfig(BaseModel):
     sample_rate: int
     num_mels: int
     mel_fmin: float
-    mel_fmax: None
+    mel_fmax: float
     num_mfcc: int
     log_mels: bool
     n_fft: int
     num_freq: int
     win_length: int
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 class AudioProcessorConfig(BaseModel):
     feature_type: AudioProcessorType
     mfcc: MFCCAudioProcessorConfig
     spectrogram: SpectrogramAudioProcessorConfig
     melspectrogram: MelspectrogramAudioProcessorConfig
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)

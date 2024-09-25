@@ -6,9 +6,14 @@ from src.spira_training.shared.ports.audios_repository import AudiosRepository
 class FakeAudiosRepository(AudiosRepository):
     def __init__(self):
         self.audios = {}
+        self.get_audio_called = False
 
     def get_audios(self, path: str) -> List[Audio]:
         return self.audios.get(path, [])
+
+    def get_audio(self, path: str) -> Audio:
+        self.get_audio_called = True
+        return self.audios.get(path, Audio())
 
 
 def make_audios():
