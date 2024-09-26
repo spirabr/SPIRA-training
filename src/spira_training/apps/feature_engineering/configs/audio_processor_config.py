@@ -15,8 +15,6 @@ class MFCCAudioProcessorConfig(BaseModel):
     n_fft: int
     win_length: int
 
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
 class SpectrogramAudioProcessorConfig(BaseModel):
     sample_rate: int
     num_mels: int
@@ -27,8 +25,6 @@ class SpectrogramAudioProcessorConfig(BaseModel):
     n_fft: int
     num_freq: int
     win_length: int
-
-    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 class MelspectrogramAudioProcessorConfig(BaseModel):
     sample_rate: int
@@ -41,12 +37,8 @@ class MelspectrogramAudioProcessorConfig(BaseModel):
     num_freq: int
     win_length: int
 
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
 class AudioProcessorConfig(BaseModel):
     feature_type: AudioProcessorType
     mfcc: MFCCAudioProcessorConfig
     spectrogram: SpectrogramAudioProcessorConfig
     melspectrogram: MelspectrogramAudioProcessorConfig
-
-    model_config = ConfigDict(arbitrary_types_allowed=True)
