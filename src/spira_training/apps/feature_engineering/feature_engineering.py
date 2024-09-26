@@ -1,7 +1,7 @@
 import asyncio
 from pathlib import Path
 
-from src.spira_training.shared.adapters.JsonConfigLoader import JsonConfigLoader
+from src.spira_training.shared.adapters.json_config_loader import JsonConfigLoader
 from src.spira_training.shared.core.services.feature_engineering_service import FeatureEngineeringService
 from src.spira_training.shared.core.services.randomizer import Randomizer
 from tests.fakes.fake_dataset_repository import FakeDatasetRepository
