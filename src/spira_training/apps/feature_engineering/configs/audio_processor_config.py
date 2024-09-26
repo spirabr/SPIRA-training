@@ -1,11 +1,12 @@
+from enum import Enum
 from typing import ClassVar
 
 from pydantic import BaseModel, ConfigDict
 
-class AudioProcessorType(BaseModel):
-    MFCC: ClassVar[str] = "mfcc"
-    SPECTROGRAM: ClassVar[str] = "spectrogram"
-    MELSPECTROGRAM: ClassVar[str] = "melspectrogram"
+class AudioProcessorType(str, Enum):
+    MFCC = "mfcc"
+    SPECTROGRAM = "spectrogram"
+    MELSPECTROGRAM = "melspectrogram"
 
 class MFCCAudioProcessorConfig(BaseModel):
     sample_rate: int

@@ -2,7 +2,6 @@ from src.spira_training.apps.feature_engineering.configs.audio_config import Aud
 from src.spira_training.apps.feature_engineering.configs.audio_feature_transformer_config import AudioFeatureTransformerConfig, AudioFeatureTransformerOptions, AudioFeatureTransformersCollection, NoisyAudioFeatureTransformerConfig, OverlappedAudioFeatureTransformerConfig, MixedAudioFeatureTransformerConfig
 from src.spira_training.apps.feature_engineering.configs.audio_processor_config import AudioProcessorConfig, AudioProcessorType, MFCCAudioProcessorConfig, SpectrogramAudioProcessorConfig, MelspectrogramAudioProcessorConfig
 from src.spira_training.apps.feature_engineering.configs.feature_engineering_config import FeatureEngineeringConfig
-from src.spira_training.shared.core.models.valid_path import ValidPath
 
 def make_feature_engineering_config():
     return FeatureEngineeringConfig(
@@ -16,7 +15,7 @@ def make_feature_engineering_config():
             normalize=True
         ),
         audio_processor=AudioProcessorConfig(
-            feature_type=AudioProcessorType(MFCC="mfcc"),
+            feature_type=AudioProcessorType.MFCC,
             mfcc=MFCCAudioProcessorConfig(
                 sample_rate=16000,
                 num_mels=40,
