@@ -54,22 +54,24 @@ class PytorchModelTrainer(ModelTrainer):
             dataset=test_dataset
         )
 
-        for _ in range(0, epochs):
+        for epoch in range(0, epochs):
             self._execute_training_epoch(
                 train_batches=train_dataloader.get_batches(),
                 test_batches=test_dataloader.get_batches(),
+                epoch=epoch,
             )
 
         return self._model
 
     def _execute_training_epoch(
-        self, train_batches: Sequence[Batch], test_batches: Sequence[Batch]
+        self, train_batches: Sequence[Batch], test_batches: Sequence[Batch], epoch: int
     ):
         for train_batch in train_batches:
             self._execute_training_batch(train_batch)
 
-        for test_batch in test_batches:
-            self._execute_test_batch(test_batch)
+        for batch_index, test_batch in enumerate(test_batches):
+            step = epoch * len(test_batches) + batch_index
+            self._execute_test_batch(batch=test_batch, step=step, epoch=epoch)
 
     def _execute_training_batch(self, batch: Batch):
         predictions = self._model.predict_batch(batch.features)
@@ -85,7 +87,7 @@ class PytorchModelTrainer(ModelTrainer):
         self._optimizer.step()
         self._scheduler.step()
 
-    def _execute_test_batch(self, batch: Batch):
+    def _execute_test_batch(self, batch: Batch, step: int, epoch: int):
         predictions = self._model.predict_batch(batch.features)
         loss = self._test_loss_calculator.calculate_loss(
             predictions=predictions, labels=batch.labels
@@ -98,6 +100,6 @@ class PytorchModelTrainer(ModelTrainer):
         self._checkpoint_manager.update_and_save_checkpoint(
             checkpoint=Checkpoint(
                 loss=loss,
-                step=0,
+                step=step,
             )
         )
