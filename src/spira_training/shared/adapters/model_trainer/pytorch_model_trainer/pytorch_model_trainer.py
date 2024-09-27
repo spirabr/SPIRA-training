@@ -1,5 +1,6 @@
 from typing import Sequence
 
+
 from src.spira_training.shared.core.models.event import TestLossEvent, TrainLossEvent
 
 from src.spira_training.shared.ports.train_logger import TrainLogger
@@ -11,6 +12,7 @@ from .interfaces.dataloader_factory import DataloaderFactory
 from .interfaces.optimizer import Optimizer
 from .interfaces.loss_calculator import LossCalculator
 from .interfaces.scheduler import Scheduler
+from .interfaces.checkpoint_manager import Checkpoint, CheckpointManager
 from src.spira_training.shared.core.models.batch import Batch
 from src.spira_training.shared.ports.model_trainer import ModelTrainer
 from src.spira_training.shared.core.models.trained_model import TrainedModel
@@ -30,6 +32,7 @@ class PytorchModelTrainer(ModelTrainer):
         test_loss_calculator: LossCalculator,
         train_logger: TrainLogger,
         scheduler: Scheduler,
+        checkpoint_manager: CheckpointManager,
     ) -> None:
         self._model = base_model
         self._optimizer = optimizer
@@ -39,6 +42,7 @@ class PytorchModelTrainer(ModelTrainer):
         self._test_loss_calculator = test_loss_calculator
         self._train_logger = train_logger
         self._scheduler = scheduler
+        self._checkpoint_manager = checkpoint_manager
 
     def train_model(
         self, train_dataset: Dataset, test_dataset: Dataset, epochs: int
@@ -89,5 +93,11 @@ class PytorchModelTrainer(ModelTrainer):
         self._train_logger.log_event(
             TestLossEvent(
                 loss=loss,
+            )
+        )
+        self._checkpoint_manager.update_and_save_checkpoint(
+            checkpoint=Checkpoint(
+                loss=loss,
+                step=0,
             )
         )

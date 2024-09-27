@@ -5,6 +5,7 @@ from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pyto
 from typing_extensions import TypedDict
 from src.spira_training.shared.core.models.dataset import Label
 from tests.fakes.fake_audios_repository import make_audio
+from tests.fakes.fake_checkpoint_manager import FakeCheckpointManager
 from tests.fakes.fake_dataloader_factory import FakeDataloaderFactory
 from tests.fakes.fake_dataset_repository import make_dataset
 from tests.fakes.fake_loss_calculator import FakeLossCalculator, make_loss
@@ -23,6 +24,7 @@ class SetupData(TypedDict):
     train_loss_calculator: FakeLossCalculator
     train_logger: FakeTrainLogger
     scheduler: FakeScheduler
+    checkpoint_manager: FakeCheckpointManager
 
 
 def make_setup() -> SetupData:
@@ -34,6 +36,7 @@ def make_setup() -> SetupData:
     test_loss_calculator = FakeLossCalculator().with_fixed_loss(make_loss())
     scheduler = FakeScheduler()
     train_logger = FakeTrainLogger()
+    checkpoint_manager = FakeCheckpointManager()
 
     return {
         "sut": PytorchModelTrainer(
@@ -45,6 +48,7 @@ def make_setup() -> SetupData:
             test_loss_calculator=test_loss_calculator,
             train_logger=train_logger,
             scheduler=scheduler,
+            checkpoint_manager=checkpoint_manager,
         ),
         "base_model": base_model,
         "optimizer": optimizer,
@@ -54,6 +58,7 @@ def make_setup() -> SetupData:
         "test_loss_calculator": test_loss_calculator,
         "train_logger": train_logger,
         "scheduler": scheduler,
+        "checkpoint_manager": checkpoint_manager,
     }
 
 
@@ -211,3 +216,24 @@ def test_executes_scheduler_each_train_batch():
     scheduler.assert_step_called_times(
         times=len(train_dataloader_factory.dataloader.get_batches())
     )
+
+
+def test_saves_checkpoint_each_test_batch():
+    # Arrange
+    setup = make_setup()
+    sut = setup["sut"]
+    checkpoint_manager = setup["checkpoint_manager"]
+    test_dataloader_factory = setup["test_dataloader_factory"]
+
+    # Act
+    sut.train_model(
+        train_dataset=make_dataset(),
+        test_dataset=make_dataset(),
+        epochs=1,
+    )
+
+    # Assert
+    batches = test_dataloader_factory.dataloader.get_batches()
+    checkpoints = checkpoint_manager.checkpoints
+
+    assert len(checkpoints) == len(batches)
