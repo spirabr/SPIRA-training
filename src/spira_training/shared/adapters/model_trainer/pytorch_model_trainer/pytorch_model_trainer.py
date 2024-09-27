@@ -69,8 +69,10 @@ class PytorchModelTrainer(ModelTrainer):
         for train_batch in train_batches:
             self._execute_training_batch(train_batch)
 
+        batches_amount = len(test_batches)
+
         for batch_index, test_batch in enumerate(test_batches):
-            step = epoch * len(test_batches) + batch_index
+            step = (epoch * batches_amount) + batch_index
             self._execute_test_batch(batch=test_batch, step=step, epoch=epoch)
 
     def _execute_training_batch(self, batch: Batch):
