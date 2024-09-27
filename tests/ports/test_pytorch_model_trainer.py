@@ -10,6 +10,7 @@ from tests.fakes.fake_dataset_repository import make_dataset
 from tests.fakes.fake_loss_calculator import FakeLossCalculator, make_loss
 from tests.fakes.fake_model import FakeModel
 from tests.fakes.fake_optimizer import FakeOptimizer
+from tests.fakes.fake_scheduler import FakeScheduler
 from tests.fakes.fake_train_logger import FakeTrainLogger
 
 
@@ -21,6 +22,7 @@ class SetupData(TypedDict):
     optimizer: FakeOptimizer
     train_loss_calculator: FakeLossCalculator
     train_logger: FakeTrainLogger
+    scheduler: FakeScheduler
 
 
 def make_setup() -> SetupData:
@@ -30,6 +32,7 @@ def make_setup() -> SetupData:
     test_dataloader_factory = FakeDataloaderFactory()
     train_loss_calculator = FakeLossCalculator().with_fixed_loss(make_loss())
     test_loss_calculator = FakeLossCalculator().with_fixed_loss(make_loss())
+    scheduler = FakeScheduler()
     train_logger = FakeTrainLogger()
 
     return {
@@ -41,6 +44,7 @@ def make_setup() -> SetupData:
             train_loss_calculator=train_loss_calculator,
             test_loss_calculator=test_loss_calculator,
             train_logger=train_logger,
+            scheduler=scheduler,
         ),
         "base_model": base_model,
         "optimizer": optimizer,
@@ -49,6 +53,7 @@ def make_setup() -> SetupData:
         "train_loss_calculator": train_loss_calculator,
         "test_loss_calculator": test_loss_calculator,
         "train_logger": train_logger,
+        "scheduler": scheduler,
     }
 
 
@@ -190,3 +195,19 @@ def test_logs_test_loss_each_test_batch():
     assert len(test_loss_events) == len(batches)
     for event in test_loss_events:
         assert event.loss == fixed_loss
+
+
+def test_executes_scheduler_each_train_batch():
+    # Arrange
+    setup = make_setup()
+    sut = setup["sut"]
+    scheduler = setup["scheduler"]
+    train_dataloader_factory = setup["train_dataloader_factory"]
+
+    # Act
+    sut.train_model(train_dataset=make_dataset(), test_dataset=make_dataset(), epochs=1)
+
+    # Assert
+    scheduler.assert_step_called_times(
+        times=len(train_dataloader_factory.dataloader.get_batches())
+    )

@@ -10,6 +10,7 @@ from src.spira_training.shared.core.models.dataset import Dataset
 from .interfaces.dataloader_factory import DataloaderFactory
 from .interfaces.optimizer import Optimizer
 from .interfaces.loss_calculator import LossCalculator
+from .interfaces.scheduler import Scheduler
 from src.spira_training.shared.core.models.batch import Batch
 from src.spira_training.shared.ports.model_trainer import ModelTrainer
 from src.spira_training.shared.core.models.trained_model import TrainedModel
@@ -28,6 +29,7 @@ class PytorchModelTrainer(ModelTrainer):
         train_loss_calculator: LossCalculator,
         test_loss_calculator: LossCalculator,
         train_logger: TrainLogger,
+        scheduler: Scheduler,
     ) -> None:
         self._model = base_model
         self._optimizer = optimizer
@@ -36,6 +38,7 @@ class PytorchModelTrainer(ModelTrainer):
         self._train_loss_calculator = train_loss_calculator
         self._test_loss_calculator = test_loss_calculator
         self._train_logger = train_logger
+        self._scheduler = scheduler
 
     def train_model(
         self, train_dataset: Dataset, test_dataset: Dataset, epochs: int
@@ -76,6 +79,7 @@ class PytorchModelTrainer(ModelTrainer):
         )
         self._train_loss_calculator.recalculate_weights()
         self._optimizer.step()
+        self._scheduler.step()
 
     def _execute_test_batch(self, batch: Batch):
         predictions = self._model.predict_batch(batch.features)
