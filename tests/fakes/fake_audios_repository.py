@@ -13,7 +13,7 @@ class FakeAudiosRepository(AudiosRepository):
 
     def get_audio(self, path: str) -> Audio:
         self.get_audio_called = True
-        return self.audios.get(path, Audio())
+        return self.audios.get(path, Audio(wav=None, sample_rate=0))
 
 
 def make_audios():
