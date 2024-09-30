@@ -3,7 +3,7 @@ import torchaudio.transforms as transforms
 from src.spira_training.shared.ports.audio_processor import AudioProcessor
 
 
-class MelspectogramAudioProcessor(AudioProcessor):
+class MelspectrogramAudioProcessor(AudioProcessor):
 
     def __init__(self, config: 'MelspectrogramAudioProcessorConfig', hop_length: int):
         self.hop_length = hop_length

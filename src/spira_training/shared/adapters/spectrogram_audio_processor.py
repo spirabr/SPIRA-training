@@ -4,7 +4,7 @@ from src.spira_training.apps.feature_engineering.configs.audio_processor_config 
 from src.spira_training.shared.ports.audio_processor import AudioProcessor
 
 
-class SpectogramAudioProcessor(AudioProcessor):
+class SpectrogramAudioProcessor(AudioProcessor):
 
     def __init__(self, config: 'SpectrogramAudioProcessorConfig', hop_length: int):
         self.hop_length = hop_length
