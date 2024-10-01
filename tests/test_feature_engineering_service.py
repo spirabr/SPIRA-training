@@ -1,6 +1,8 @@
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
+
 from src.spira_training.shared.core.services.feature_engineering_service import FeatureEngineeringService
 from tests.fakes.fake_dataset_repository import FakeDatasetRepository
 from tests.fakes.fake_audios_repository import FakeAudiosRepository
@@ -60,3 +62,30 @@ async def test_execute():
     # Assert
     assert dataset_repository.save_dataset_called
     assert audios_repository.get_audio_called
+
+@pytest.mark.asyncio
+async def test_audio_processor_creation():
+    # Arrange
+    save_dataset_path = Path("any_dataset_storage_path")
+    config = make_feature_engineering_config()
+    randomizer = FakeRandomizer()
+    dataset_repository = FakeDatasetRepository()
+    audios_repository = FakeAudiosRepository()
+    file_reader = FakeFileReader()
+    path_validator = FakePathValidator()
+
+    sut = make_sut(
+        config=config,
+        randomizer=randomizer,
+        dataset_repository=dataset_repository,
+        audios_repository=audios_repository,
+        file_reader=file_reader,
+        path_validator=path_validator,
+    )
+
+    with patch('src.spira_training.shared.core.services.feature_engineering_service.create_audio_processor') as mock_create_audio_processor:
+        # Act
+        await sut.execute(save_dataset_path=save_dataset_path)
+
+        # Assert
+        mock_create_audio_processor.assert_called_once_with(config.audio_processor)
