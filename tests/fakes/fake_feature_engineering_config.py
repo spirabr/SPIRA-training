@@ -11,11 +11,11 @@ def make_feature_engineering_config():
                 controls_csv="controls.csv",
                 noises_csv="noises.csv"
             ),
-            hop_length=512,
             normalize=True
         ),
         audio_processor=AudioProcessorConfig(
             feature_type=AudioProcessorType.MFCC,
+            hop_length=512,
             mfcc=MFCCAudioProcessorConfig(
                 sample_rate=16000,
                 num_mels=40,
