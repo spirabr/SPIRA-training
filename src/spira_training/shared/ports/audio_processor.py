@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.spira_training.shared.core.models.audios import Audios
+from src.spira_training.shared.core.models.audio_collection import AudioCollection
 from src.spira_training.shared.core.models.audio import Audio
 
 
@@ -18,6 +18,6 @@ class AudioProcessor(ABC):
         )
         return Audio(wav=reshaped_feature_wav, sample_rate=audio.sample_rate)
 
-    def process_audios(self, audios: Audios) -> Audios:
+    def process_audios(self, audios: AudioCollection) -> AudioCollection:
         audio_list = [self.process_audio(audio) for audio in audios]
-        return Audios(audios=audio_list, hop_length=audios.hop_length)
+        return AudioCollection(audios=audio_list, hop_length=audios.hop_length)
