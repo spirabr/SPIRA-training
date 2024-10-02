@@ -29,7 +29,7 @@ class FakeLossCalculator(LossCalculator):
         ), f"Expected {times} calls, got {self.recalculate_weights_calls}"
 
 
-class FakeCyclingLossCalculator(LossCalculator):
+class FakeCyclingLossCalculator(FakeLossCalculator):
     def __init__(self):
         self.cycling_losses = []
         self.recalculate_weights_calls = 0
