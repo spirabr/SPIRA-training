@@ -1,6 +1,6 @@
 import pytest
 
-from src.spira_training.shared.adapters.mfcc_audio_processor import MFCCAudioProcessor
+from src.spira_training.shared.adapters.audio_processor.mfcc_audio_processor import MFCCAudioProcessor
 from src.spira_training.shared.core.audio_processor_factory import create_audio_processor
 from tests.fakes.fake_feature_engineering_config import make_feature_engineering_config
 

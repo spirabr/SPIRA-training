@@ -1,8 +1,8 @@
 from src.spira_training.apps.feature_engineering.configs.audio_processor_config import AudioProcessorType, \
     AudioProcessorConfig
-from src.spira_training.shared.adapters.melspectrogram_audio_processor import MelspectrogramAudioProcessor
-from src.spira_training.shared.adapters.mfcc_audio_processor import MFCCAudioProcessor
-from src.spira_training.shared.adapters.spectrogram_audio_processor import SpectrogramAudioProcessor
+from src.spira_training.shared.adapters.audio_processor.melspectrogram_audio_processor import MelspectrogramAudioProcessor
+from src.spira_training.shared.adapters.audio_processor.mfcc_audio_processor import MFCCAudioProcessor
+from src.spira_training.shared.adapters.audio_processor.spectrogram_audio_processor import SpectrogramAudioProcessor
 from src.spira_training.shared.ports.audio_processor import AudioProcessor
 
 
