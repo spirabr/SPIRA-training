@@ -27,6 +27,7 @@ class SetupData(TypedDict):
     test_dataloader_factory: FakeDataloaderFactory
     optimizer: FakeOptimizer
     train_loss_calculator: FakeLossCalculator
+    test_loss_calculator: FakeLossCalculator
     train_logger: FakeTrainLogger
     scheduler: FakeScheduler
     checkpoint_manager: FakeCheckpointManager
