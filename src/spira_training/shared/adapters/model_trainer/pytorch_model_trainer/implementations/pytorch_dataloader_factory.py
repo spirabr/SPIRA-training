@@ -1,4 +1,8 @@
 from typing import Literal
+
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.wav import (
+    create_empty_wav,
+)
 from .pytorch_dataset import PytorchDataset
 from .pytorch_dataloader import PytorchDataloader
 from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.dataloader import (
@@ -24,8 +28,11 @@ class PytorchDataloaderFactory(DataloaderFactory):
         self._dataloader_type: PytorchDataloaderFactoryType = dataloader_type
 
     def make_dataloader(self, dataset: Dataset) -> Dataloader:
+        features = [create_empty_wav() for _ in range(len(dataset.features))]
+        labels = [0 for _ in range(len(dataset.labels))]
         pytorch_dataset = PytorchDataset(
-            features=dataset.features, labels=dataset.labels
+            features=features,
+            labels=labels,
         )
         return PytorchDataloader(
             dataset=pytorch_dataset,
