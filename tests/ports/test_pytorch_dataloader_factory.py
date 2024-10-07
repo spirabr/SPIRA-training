@@ -1,3 +1,6 @@
+from spira_training.shared.adapters.model_trainer.pytorch_model_trainer.implementations.pytorch_dataloader import (
+    PytorchDataloaderType,
+)
 from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.implementations.pytorch_dataloader_factory import (
     PytorchDataloaderFactory,
 )
@@ -12,7 +15,7 @@ class SetupItems(BaseTestModel):
 
 
 def make_setup(
-    dataloader_type: str = "train",
+    dataloader_type: PytorchDataloaderType = "train",
     batch_size: int = 1,
 ):
     wav_factory = FakeWavFactory()
