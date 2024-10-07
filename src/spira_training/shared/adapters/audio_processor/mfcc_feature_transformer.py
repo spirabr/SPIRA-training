@@ -1,12 +1,12 @@
 import torchaudio.transforms as transforms
 
 from src.spira_training.apps.feature_engineering.configs.audio_processor_config import MFCCAudioProcessorConfig
-from src.spira_training.shared.ports.audio_processor import AudioProcessor
+from src.spira_training.shared.core.models.wav import Wav
+from src.spira_training.shared.ports.feature_transformer import FeatureTransformer
 
 
-class MFCCAudioProcessor(AudioProcessor):
+class MFCCFeatureTransformer(FeatureTransformer):
     def __init__(self, config: 'MFCCAudioProcessorConfig', hop_length: int):
-        self.hop_length = hop_length
         self.mfcc = transforms.MFCC(
             sample_rate=config.sample_rate,
             n_mfcc=config.num_mfcc,
@@ -19,5 +19,5 @@ class MFCCAudioProcessor(AudioProcessor):
             },
         )
 
-    def get_transformer(self):
-        return self.mfcc
+    def transform(self, wav: Wav) -> Wav:
+        return self.mfcc(wav)

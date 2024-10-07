@@ -1,17 +1,15 @@
-from abc import ABC, abstractmethod
 
 from src.spira_training.shared.core.models.audio_collection import AudioCollection
 from src.spira_training.shared.core.models.audio import Audio
+from src.spira_training.shared.ports.feature_transformer import FeatureTransformer
 
 
-class AudioProcessor(ABC):
-    @abstractmethod
-    def get_transformer(self):
-        pass
+class AudioProcessor:
+    def __init__(self, feature_transformer: FeatureTransformer):
+        self.feature_transformer = feature_transformer
 
     def process_audio(self, audio: Audio) -> Audio:
-        transformer = self.get_transformer()
-        feature_wav = transformer(audio.wav)
+        feature_wav = self.feature_transformer.transform(audio.wav)
         transposed_feature_wav = feature_wav.transpose(1, 2)
         reshaped_feature_wav = transposed_feature_wav.reshape(
             transposed_feature_wav.shape[1:]

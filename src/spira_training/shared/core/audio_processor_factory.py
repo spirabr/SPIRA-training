@@ -1,29 +1,34 @@
 from src.spira_training.apps.feature_engineering.configs.audio_processor_config import AudioProcessorType, \
     AudioProcessorConfig
-from src.spira_training.shared.adapters.audio_processor.melspectrogram_audio_processor import MelspectrogramAudioProcessor
-from src.spira_training.shared.adapters.audio_processor.mfcc_audio_processor import MFCCAudioProcessor
-from src.spira_training.shared.adapters.audio_processor.spectrogram_audio_processor import SpectrogramAudioProcessor
+from src.spira_training.shared.adapters.audio_processor.melspectrogram_feature_transformer import MelspectrogramFeatureTransformer
+from src.spira_training.shared.adapters.audio_processor.mfcc_feature_transformer import MFCCFeatureTransformer
+from src.spira_training.shared.adapters.audio_processor.spectrogram_feature_transformer import SpectrogramFeatureTransformer
 from src.spira_training.shared.ports.audio_processor import AudioProcessor
+from src.spira_training.shared.ports.feature_transformer import FeatureTransformer
 
 
 def create_audio_processor(config: AudioProcessorConfig) -> AudioProcessor:
+    feature_transformer = create_feature_transformer(config)
+
+    return AudioProcessor(feature_transformer=feature_transformer)
+
+def create_feature_transformer(config: AudioProcessorConfig) -> FeatureTransformer:
 
     match config.feature_type:
         case AudioProcessorType.MFCC:
-            return MFCCAudioProcessor(
+            return MFCCFeatureTransformer(
                 config.mfcc,
                 config.hop_length,
             )
         case AudioProcessorType.SPECTROGRAM:
-                return SpectrogramAudioProcessor(
+            return SpectrogramFeatureTransformer(
                 config.spectrogram,
-                config.hop_length,
+                config.hop_length
             )
         case AudioProcessorType.MELSPECTROGRAM:
-            return MelspectrogramAudioProcessor(
+            return MelspectrogramFeatureTransformer(
                 config.melspectrogram,
                 config.hop_length,
             )
         case _:
             raise ValueError(f"Unknown audio processor type: {config.feature_type}")
-
