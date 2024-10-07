@@ -82,11 +82,9 @@ def test_dont_shuffle_test_data():
 
     batch = batches[0]
     for i in range(0, 100):
-        ith_batch_label = batch.labels[
-            i
-        ]  # TODO: Fix this, its currently a tensor but typing says its a Label
+        ith_batch_label = batch.labels[i]
         ith_dataset_label = dataset.labels[i].value
 
         assert (
-            ith_batch_label.item() == ith_dataset_label
+            ith_batch_label == ith_dataset_label
         ), f"{i}th batch label {ith_batch_label} does not match {i}th dataset label {ith_dataset_label}"
