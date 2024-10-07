@@ -34,7 +34,7 @@ class PytorchDataloaderFactory(DataloaderFactory):
         features = [
             self._wav_factory.create_wav_from_audio(audio) for audio in dataset.features
         ]
-        labels = [0 for _ in range(len(dataset.labels))]
+        labels = [label.value for label in dataset.labels]
         pytorch_dataset = PytorchDataset(
             features=features,
             labels=labels,

@@ -18,8 +18,10 @@ class FakeDatasetRepository(DatasetRepository):
         self.save_dataset_called = True
 
 
-def make_dataset():
-    features = [make_audio() for _ in range(0, 100)]
+def make_dataset(
+    size: int = 100,
+):
+    features = [make_audio() for _ in range(0, size)]
     all_labels = [label for label in Label]
     features_labels = [random.choice(all_labels) for _ in features]
     return Dataset(features=features, labels=features_labels)

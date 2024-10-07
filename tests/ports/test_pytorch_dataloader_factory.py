@@ -13,10 +13,11 @@ class SetupItems(BaseTestModel):
 
 def make_setup(
     dataloader_type: str = "train",
+    batch_size: int = 1,
 ):
     wav_factory = FakeWavFactory()
     sut = PytorchDataloaderFactory(
-        batch_size=1,
+        batch_size=batch_size,
         dataloader_type=dataloader_type,
         num_workers=1,
         wav_factory=wav_factory,
@@ -61,3 +62,28 @@ def test_uses_wav_factory():
 
     for feature in dataset.features:
         wav_factory.assert_called_with(feature)
+
+
+def test_dont_shuffle_test_data():
+    setup = make_setup(
+        batch_size=100,
+        dataloader_type="test",
+    )
+    sut = setup.sut
+    dataset = make_dataset(size=100)
+
+    result = sut.make_dataloader(dataset=dataset)
+
+    batches = result.get_batches()
+    assert len(batches) == 1
+
+    batch = batches[0]
+    for i in range(0, 100):
+        ith_batch_label = batch.labels[
+            i
+        ]  # TODO: Fix this, its currently a tensor but typing says its a Label
+        ith_dataset_label = dataset.labels[i].value
+
+        assert (
+            ith_batch_label.item() == ith_dataset_label
+        ), f"{i}th batch label {ith_batch_label} does not match {i}th dataset label {ith_dataset_label}"
