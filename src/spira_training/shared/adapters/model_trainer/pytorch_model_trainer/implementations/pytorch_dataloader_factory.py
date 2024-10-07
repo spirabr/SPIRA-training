@@ -1,8 +1,9 @@
 from typing import Literal
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.wav import (
-    create_empty_wav,
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.wav_factory import (
+    WavFactory,
 )
+
 from .pytorch_dataset import PytorchDataset
 from .pytorch_dataloader import PytorchDataloader
 from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.dataloader import (
@@ -22,13 +23,17 @@ class PytorchDataloaderFactory(DataloaderFactory):
         batch_size: int,
         num_workers: int,
         dataloader_type: PytorchDataloaderFactoryType,
+        wav_factory: WavFactory,
     ) -> None:
         self._batch_size = batch_size
         self._num_workers = num_workers
         self._dataloader_type: PytorchDataloaderFactoryType = dataloader_type
+        self._wav_factory = wav_factory
 
     def make_dataloader(self, dataset: Dataset) -> Dataloader:
-        features = [create_empty_wav() for _ in range(len(dataset.features))]
+        features = [
+            self._wav_factory.create_wav_from_audio(audio) for audio in dataset.features
+        ]
         labels = [0 for _ in range(len(dataset.labels))]
         pytorch_dataset = PytorchDataset(
             features=features,
