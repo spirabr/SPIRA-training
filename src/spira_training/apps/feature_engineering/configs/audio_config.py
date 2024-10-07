@@ -9,5 +9,4 @@ class DatasetPaths(BaseModel):
 
 class AudioConfig(BaseModel):
     dataset_paths: DatasetPaths
-    hop_length: int
     normalize: bool

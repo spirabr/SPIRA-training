@@ -40,6 +40,7 @@ class MelspectrogramAudioProcessorConfig(BaseModel):
 
 class AudioProcessorConfig(BaseModel):
     feature_type: AudioProcessorType
+    hop_length: int
     mfcc: MFCCAudioProcessorConfig
     spectrogram: SpectrogramAudioProcessorConfig
     melspectrogram: MelspectrogramAudioProcessorConfig

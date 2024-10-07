@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from src.spira_training.apps.feature_engineering.configs.feature_engineering_config import FeatureEngineeringConfig
+from src.spira_training.shared.core.audio_processor_factory import create_audio_processor
 from src.spira_training.shared.core.interfaces.random import Random
 from src.spira_training.shared.core.models.valid_path import ValidPath
 from src.spira_training.shared.ports.audios_repository import AudiosRepository
@@ -49,5 +50,7 @@ class FeatureEngineeringService:
         return self.audios_repository.get_audio(str(path))
 
     def _generate_dataset(self):
-        pass
+        audio_processor = create_audio_processor(self.config.audio_processor)
+
+        #TODO - pass audio_processor to feature transformer and generate dataset
 
