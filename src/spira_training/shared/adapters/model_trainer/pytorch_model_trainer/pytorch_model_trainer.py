@@ -1,5 +1,13 @@
 from typing import Sequence
 
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_model import (
+    PytorchModel,
+)
+
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_batch import (
+    PytorchBatch,
+)
+
 
 from src.spira_training.shared.core.models.event import TestLossEvent, TrainLossEvent
 
@@ -13,12 +21,12 @@ from .interfaces.optimizer import Optimizer
 from .interfaces.loss_calculator import LossCalculator
 from .interfaces.scheduler import Scheduler
 from .interfaces.checkpoint_manager import Checkpoint, CheckpointManager
-from src.spira_training.shared.core.models.batch import Batch
+
 from src.spira_training.shared.ports.model_trainer import ModelTrainer
 from src.spira_training.shared.core.models.trained_model import TrainedModel
 
 
-BaseModel = TrainedModel
+BaseModel = PytorchModel
 
 
 class PytorchModelTrainer(ModelTrainer):
@@ -64,7 +72,10 @@ class PytorchModelTrainer(ModelTrainer):
         return self._model
 
     def _execute_training_epoch(
-        self, train_batches: Sequence[Batch], test_batches: Sequence[Batch], epoch: int
+        self,
+        train_batches: Sequence[PytorchBatch],
+        test_batches: Sequence[PytorchBatch],
+        epoch: int,
     ):
         for train_batch in train_batches:
             self._execute_training_batch(train_batch)
@@ -75,7 +86,7 @@ class PytorchModelTrainer(ModelTrainer):
             step = (epoch * batches_amount) + batch_index
             self._execute_test_batch(batch=test_batch, step=step, epoch=epoch)
 
-    def _execute_training_batch(self, batch: Batch):
+    def _execute_training_batch(self, batch: PytorchBatch):
         predictions = self._model.predict_batch(batch.features)
         loss = self._train_loss_calculator.calculate_loss(
             predictions=predictions, labels=batch.labels
@@ -89,7 +100,7 @@ class PytorchModelTrainer(ModelTrainer):
         self._optimizer.step()
         self._scheduler.step()
 
-    def _execute_test_batch(self, batch: Batch, step: int, epoch: int):
+    def _execute_test_batch(self, batch: PytorchBatch, step: int, epoch: int):
         predictions = self._model.predict_batch(batch.features)
         loss = self._test_loss_calculator.calculate_loss(
             predictions=predictions, labels=batch.labels

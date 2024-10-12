@@ -3,8 +3,6 @@ from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pyto
     PytorchModelTrainer,
 )
 from typing_extensions import TypedDict
-from src.spira_training.shared.core.models.dataset import Label
-from tests.fakes.fake_audios_repository import make_audio
 from tests.fakes.fake_checkpoint_manager import FakeCheckpointManager
 from tests.fakes.fake_dataloader import make_batches, make_dataloader
 from tests.fakes.fake_dataloader_factory import FakeDataloaderFactory
@@ -14,15 +12,16 @@ from tests.fakes.fake_loss_calculator import (
     FakeLossCalculator,
     make_loss,
 )
-from tests.fakes.fake_model import FakeModel
+from tests.fakes.fake_model import FakePytorchModel
 from tests.fakes.fake_optimizer import FakeOptimizer
 from tests.fakes.fake_scheduler import FakeScheduler
 from tests.fakes.fake_train_logger import FakeTrainLogger
 
 
+# oi
 class SetupData(TypedDict):
     sut: PytorchModelTrainer
-    base_model: FakeModel
+    base_model: FakePytorchModel
     train_dataloader_factory: FakeDataloaderFactory
     test_dataloader_factory: FakeDataloaderFactory
     optimizer: FakeOptimizer
@@ -36,7 +35,7 @@ class SetupData(TypedDict):
 def make_setup(
     test_loss_calculator: FakeLossCalculator | None = None,
 ) -> SetupData:
-    base_model = FakeModel()
+    base_model = FakePytorchModel()
     optimizer = FakeOptimizer()
     train_dataloader_factory = FakeDataloaderFactory()
     test_dataloader_factory = FakeDataloaderFactory()
@@ -74,7 +73,6 @@ def make_setup(
 
 def test_returns_trained_model():
     # Arrange
-    validation_feature = make_audio()
     setup = make_setup()
     sut = setup["sut"]
 
@@ -84,9 +82,7 @@ def test_returns_trained_model():
     )
 
     # Assert
-    prediction_result = trained_model.predict(validation_feature)
-
-    assert Label.has_value(prediction_result.value)
+    assert trained_model.dump_state() is not None
 
 
 def test_trains_with_each_batch_once():

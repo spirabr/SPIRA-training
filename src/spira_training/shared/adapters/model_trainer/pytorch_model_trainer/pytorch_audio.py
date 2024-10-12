@@ -3,6 +3,7 @@ from typing import NewType
 import torch
 
 PytorchWav = NewType("PytorchWav", torch.Tensor)
+PytorchLabel = NewType("PytorchLabel", torch.Tensor)
 
 
 class PytorchAudio:

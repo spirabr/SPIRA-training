@@ -1,6 +1,9 @@
 from typing import Literal, Sequence
 
-from src.spira_training.shared.core.models.batch import Batch
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_batch import (
+    PytorchBatch,
+)
+
 from .pytorch_dataset import PytorchDataset
 from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.dataloader import (
     Dataloader,
@@ -39,10 +42,10 @@ class PytorchDataloader(Dataloader):
 
         self._dataloader_type = dataloader_type
 
-    def get_batches(self) -> Sequence[Batch]:
-        output: Sequence[Batch] = []
+    def get_batches(self) -> Sequence[PytorchBatch]:
+        output: Sequence[PytorchBatch] = []
 
         for py_batch in self._py_dataloader:
-            output.append(Batch(features=py_batch[0], labels=py_batch[1]))
+            output.append(PytorchBatch(features=py_batch[0], labels=py_batch[1]))
 
         return output
