@@ -5,9 +5,15 @@ from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pyto
 from typing_extensions import TypedDict
 from src.spira_training.shared.core.models.dataset import Label
 from tests.fakes.fake_audios_repository import make_audio
+from tests.fakes.fake_checkpoint_manager import FakeCheckpointManager
+from tests.fakes.fake_dataloader import make_batches, make_dataloader
 from tests.fakes.fake_dataloader_factory import FakeDataloaderFactory
 from tests.fakes.fake_dataset_repository import make_dataset
-from tests.fakes.fake_loss_calculator import FakeLossCalculator, make_loss
+from tests.fakes.fake_loss_calculator import (
+    FakeCyclingLossCalculator,
+    FakeLossCalculator,
+    make_loss,
+)
 from tests.fakes.fake_model import FakeModel
 from tests.fakes.fake_optimizer import FakeOptimizer
 from tests.fakes.fake_scheduler import FakeScheduler
@@ -21,19 +27,26 @@ class SetupData(TypedDict):
     test_dataloader_factory: FakeDataloaderFactory
     optimizer: FakeOptimizer
     train_loss_calculator: FakeLossCalculator
+    test_loss_calculator: FakeLossCalculator
     train_logger: FakeTrainLogger
     scheduler: FakeScheduler
+    checkpoint_manager: FakeCheckpointManager
 
 
-def make_setup() -> SetupData:
+def make_setup(
+    test_loss_calculator: FakeLossCalculator | None = None,
+) -> SetupData:
     base_model = FakeModel()
     optimizer = FakeOptimizer()
     train_dataloader_factory = FakeDataloaderFactory()
     test_dataloader_factory = FakeDataloaderFactory()
     train_loss_calculator = FakeLossCalculator().with_fixed_loss(make_loss())
-    test_loss_calculator = FakeLossCalculator().with_fixed_loss(make_loss())
+    _test_loss_calculator = (
+        test_loss_calculator or FakeLossCalculator().with_fixed_loss(make_loss())
+    )
     scheduler = FakeScheduler()
     train_logger = FakeTrainLogger()
+    checkpoint_manager = FakeCheckpointManager()
 
     return {
         "sut": PytorchModelTrainer(
@@ -42,18 +55,20 @@ def make_setup() -> SetupData:
             train_dataloader_factory=train_dataloader_factory,
             test_dataloader_factory=test_dataloader_factory,
             train_loss_calculator=train_loss_calculator,
-            test_loss_calculator=test_loss_calculator,
+            test_loss_calculator=_test_loss_calculator,
             train_logger=train_logger,
             scheduler=scheduler,
+            checkpoint_manager=checkpoint_manager,
         ),
         "base_model": base_model,
         "optimizer": optimizer,
         "train_dataloader_factory": train_dataloader_factory,
         "test_dataloader_factory": test_dataloader_factory,
         "train_loss_calculator": train_loss_calculator,
-        "test_loss_calculator": test_loss_calculator,
+        "test_loss_calculator": _test_loss_calculator,
         "train_logger": train_logger,
         "scheduler": scheduler,
+        "checkpoint_manager": checkpoint_manager,
     }
 
 
@@ -211,3 +226,55 @@ def test_executes_scheduler_each_train_batch():
     scheduler.assert_step_called_times(
         times=len(train_dataloader_factory.dataloader.get_batches())
     )
+
+
+def test_saves_checkpoint_each_test_batch():
+    # Arrange
+    epochs = 2
+    batches_amount = 3
+    setup = make_setup()
+    sut = setup["sut"]
+    checkpoint_manager = setup["checkpoint_manager"]
+    test_dataloader_factory = setup["test_dataloader_factory"]
+    test_dataloader_factory.with_dataloader(
+        make_dataloader(batches=make_batches(length=batches_amount))
+    )
+    # Act
+    sut.train_model(
+        train_dataset=make_dataset(),
+        test_dataset=make_dataset(),
+        epochs=epochs,
+    )
+
+    # Assert
+    checkpoints = checkpoint_manager.checkpoints
+
+    assert len(checkpoints) == epochs * batches_amount
+
+
+def test_saves_checkpoint_step():
+    # Arrange
+    batches_amount = 3
+    epochs = 2
+    test_batches = make_batches(length=batches_amount)
+    fixed_losses = [make_loss(), make_loss(), make_loss()]
+    setup = make_setup(
+        test_loss_calculator=FakeCyclingLossCalculator().with_fixed_losses(fixed_losses)
+    )
+    sut = setup["sut"]
+    checkpoint_manager = setup["checkpoint_manager"]
+    test_dataloader_factory = setup["test_dataloader_factory"]
+    test_dataloader_factory.with_dataloader(make_dataloader(batches=test_batches))
+
+    # Act
+    sut.train_model(
+        train_dataset=make_dataset(),
+        test_dataset=make_dataset(),
+        epochs=epochs,
+    )
+
+    # Assert
+    checkpoints = checkpoint_manager.checkpoints
+    for i, checkpoint in enumerate(checkpoints):
+        assert checkpoint.step == i
+        assert checkpoint.loss == fixed_losses[i % len(fixed_losses)]

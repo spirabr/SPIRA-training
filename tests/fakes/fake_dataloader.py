@@ -15,9 +15,17 @@ class FakeDataloader(Dataloader):
         return self._batches
 
 
-def make_batches():
-    return [make_dataset(), make_dataset(), make_dataset()]
+def make_batch():
+    return make_dataset()
 
 
-def make_dataloader():
-    return FakeDataloader(batches=make_batches())
+def make_batches(
+    length: int = 3,
+):
+    return [make_batch() for _ in range(length)]
+
+
+def make_dataloader(
+    batches: List[Batch] | None = None,
+):
+    return FakeDataloader(batches=batches or make_batches())
