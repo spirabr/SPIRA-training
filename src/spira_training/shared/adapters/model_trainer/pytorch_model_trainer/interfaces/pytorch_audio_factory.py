@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_audio import (
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_audio import (
     PytorchAudio,
 )
 

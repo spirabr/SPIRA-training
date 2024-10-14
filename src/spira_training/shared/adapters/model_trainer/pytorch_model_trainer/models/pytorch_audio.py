@@ -1,9 +1,7 @@
-from typing import NewType
-
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_wav import (
+    PytorchWav,
+)
 import torch
-
-PytorchWav = NewType("PytorchWav", torch.Tensor)
-PytorchLabel = NewType("PytorchLabel", torch.Tensor)
 
 
 class PytorchAudio:

@@ -1,15 +1,18 @@
 from abc import abstractmethod
-from typing import List, NewType
+from typing import List
 
-import torch
-from src.spira_training.shared.core.models.trained_model import TrainedModel
-
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_audio import (
-    PytorchWav,
-    PytorchLabel,
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_parameter import (
+    PytorchParameter,
 )
 
-PytorchParameter = NewType("PytorchParameter", torch.nn.Parameter)
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_wav import (
+    PytorchWav,
+)
+from src.spira_training.shared.core.models.trained_model import TrainedModel
+
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_label import (
+    PytorchLabel,
+)
 
 
 class PytorchModel(TrainedModel):

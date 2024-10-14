@@ -1,10 +1,10 @@
 from typing import List, Sequence
 
-from spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_audio import (
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_audio import (
     create_empty_wav,
 )
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_batch import (
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_batch import (
     PytorchBatch,
 )
 

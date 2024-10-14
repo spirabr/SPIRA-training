@@ -1,11 +1,15 @@
-from spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_audio import (
-    PytorchLabel,
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_parameter import (
+    PytorchParameter,
+)
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_wav import (
     PytorchWav,
+)
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_label import (
+    PytorchLabel,
 )
 
 from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.pytorch_model import (
     PytorchModel,
-    PytorchParameter,
 )
 
 from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.implementations.mish import (
@@ -39,7 +43,7 @@ class InnerTorchModel(nn.Module):
         # x: [B, n_filters, T, num_feature]
         x = x.transpose(1, 2).contiguous()
         # x: [B, T, n_filters, num_feature]
-        x = self.reshape_x(x)
+        x = self.reshape_x(x)  # type: ignore
         # x: [B, T, fc2_dim]
         x = self.fc1(x)
         x = self.mish(x)

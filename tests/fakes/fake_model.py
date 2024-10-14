@@ -1,12 +1,20 @@
 from typing import List
 
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_parameter import (
+    PytorchParameter,
+)
+
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_label import (
+    PytorchLabel,
+)
+
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_wav import (
+    PytorchWav,
+)
 import torch
 
 from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.pytorch_model import (
     PytorchModel,
-    PytorchLabel,
-    PytorchWav,
-    PytorchParameter,
 )
 
 
