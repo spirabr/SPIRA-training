@@ -72,3 +72,39 @@ def make_feature_engineering_config():
             )
         )
     )
+
+def make_audio_processor_config(feature_type: AudioProcessorType):
+    return AudioProcessorConfig(
+        feature_type=feature_type,
+        hop_length=512,
+        mfcc=MFCCAudioProcessorConfig(
+            sample_rate=16000,
+            num_mels=40,
+            num_mfcc=13,
+            log_mels=True,
+            n_fft=512,
+            win_length=400
+        ),
+        spectrogram=SpectrogramAudioProcessorConfig(
+            sample_rate=16000,
+            num_mels=40,
+            mel_fmin=0.0,
+            mel_fmax=8000.0,
+            num_mfcc=13,
+            log_mels=True,
+            n_fft=512,
+            num_freq=257,
+            win_length=400
+        ),
+        melspectrogram=MelspectrogramAudioProcessorConfig(
+            sample_rate=16000,
+            num_mels=40,
+            mel_fmin=0.0,
+            mel_fmax=8000.0,
+            num_mfcc=13,
+            log_mels=True,
+            n_fft=512,
+            num_freq=257,
+            win_length=400
+        )
+    )
