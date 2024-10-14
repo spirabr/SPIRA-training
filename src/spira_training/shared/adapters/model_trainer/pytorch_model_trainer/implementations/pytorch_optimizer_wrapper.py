@@ -5,7 +5,7 @@ import torch
 
 
 class PytorchOptimizerWrapper(Optimizer):
-    def __init__(self, torch_optimizer: torch.optim.Optimizer):
+    def __init__(self, torch_optimizer: torch.optim.optimizer.Optimizer):
         self.torch_optimizer = torch_optimizer
 
     def zero_grad(self):
