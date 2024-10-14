@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import Sequence
 
-from src.spira_training.shared.core.models.batch import Batch
+from spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_batch import (
+    PytorchBatch,
+)
 
 
 class Dataloader(ABC):
     @abstractmethod
-    def get_batches(self) -> Sequence[Batch]: ...
+    def get_batches(self) -> Sequence[PytorchBatch]: ...

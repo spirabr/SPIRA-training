@@ -1,22 +1,34 @@
 from typing import List, Sequence
 
+from spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_audio import (
+    create_empty_wav,
+)
+
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_batch import (
+    PytorchBatch,
+)
+
 from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.dataloader import (
     Dataloader,
 )
-from src.spira_training.shared.core.models.batch import Batch
-from tests.fakes.fake_dataset_repository import make_dataset
+from tests.fakes.fake_model import make_false_label
 
 
 class FakeDataloader(Dataloader):
-    def __init__(self, batches: List[Batch]):
+    def __init__(self, batches: List[PytorchBatch]):
         self._batches = batches
 
-    def get_batches(self) -> Sequence[Batch]:
+    def get_batches(self) -> Sequence[PytorchBatch]:
         return self._batches
 
 
 def make_batch():
-    return make_dataset()
+    features = [create_empty_wav() for _ in range(3)]
+    labels = [make_false_label() for _ in range(3)]
+    return PytorchBatch(
+        features=features,
+        labels=labels,
+    )
 
 
 def make_batches(
@@ -26,6 +38,6 @@ def make_batches(
 
 
 def make_dataloader(
-    batches: List[Batch] | None = None,
+    batches: List[PytorchBatch] | None = None,
 ):
     return FakeDataloader(batches=batches or make_batches())
