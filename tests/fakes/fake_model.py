@@ -6,6 +6,7 @@ from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.inte
     PytorchModel,
     PytorchLabel,
     PytorchWav,
+    PytorchParameter,
 )
 
 
@@ -33,6 +34,9 @@ class FakePytorchModel(PytorchModel):
 
     def load_state(self, state_dict: dict):
         pass
+
+    def get_parameters(self) -> list[PytorchParameter]:
+        return []
 
     def assert_predicted_once(self, feature: PytorchWav):
         self.assert_predicted_times(feature=feature, times=1)
