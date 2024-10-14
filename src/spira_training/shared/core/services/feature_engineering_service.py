@@ -1,6 +1,8 @@
 from pathlib import Path
 
 from src.spira_training.apps.feature_engineering.configs.feature_engineering_config import FeatureEngineeringConfig
+from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.pytorch_audio_factory import \
+    PytorchAudioFactory
 from src.spira_training.shared.core.audio_processor_factory import create_audio_processor
 from src.spira_training.shared.core.interfaces.random import Random
 from src.spira_training.shared.core.models.valid_path import ValidPath
@@ -17,8 +19,10 @@ class FeatureEngineeringService:
             dataset_repository: DatasetRepository,
             audios_repository: AudiosRepository,
             file_reader: FileReader,
-            path_validator: PathValidator
+            path_validator: PathValidator,
+            pytorch_audio_factory: PytorchAudioFactory
     ):
+        self.pytorch_audio_factory = pytorch_audio_factory
         self.config = config
         self.randomizer = randomizer
         self.dataset_repository = dataset_repository
@@ -28,7 +32,11 @@ class FeatureEngineeringService:
 
     async def execute(self, save_dataset_path: Path) -> None:
         patients_inputs, controls_inputs, noises = self._load_data()
+
+        audio_processor = create_audio_processor(self.config.audio_processor, self.pytorch_audio_factory)
+
         dataset = self._generate_dataset()
+
         await self.dataset_repository.save_dataset(dataset, save_dataset_path)
 
     def _load_data(self):
@@ -50,7 +58,5 @@ class FeatureEngineeringService:
         return self.audios_repository.get_audio(str(path))
 
     def _generate_dataset(self):
-        audio_processor = create_audio_processor(self.config.audio_processor)
-
-        #TODO - pass audio_processor to feature transformer and generate dataset
-
+        pass
+        #TODO - generate dataset
