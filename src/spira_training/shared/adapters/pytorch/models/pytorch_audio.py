@@ -1,4 +1,4 @@
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_wav import (
+from src.spira_training.shared.adapters.pytorch.models.pytorch_wav import (
     PytorchWav,
 )
 import torch

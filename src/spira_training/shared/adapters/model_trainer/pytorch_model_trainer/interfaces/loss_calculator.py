@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Sequence
 
 from src.spira_training.shared.core.models.loss import Loss
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_label import (
+from src.spira_training.shared.adapters.pytorch.models.pytorch_label import (
     PytorchLabel,
 )
 

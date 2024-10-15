@@ -1,16 +1,16 @@
 from abc import abstractmethod
 from typing import List
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_parameter import (
+from src.spira_training.shared.adapters.pytorch.models.pytorch_parameter import (
     PytorchParameter,
 )
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_wav import (
+from src.spira_training.shared.adapters.pytorch.models.pytorch_wav import (
     PytorchWav,
 )
 from src.spira_training.shared.core.models.trained_model import TrainedModel
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.models.pytorch_label import (
+from src.spira_training.shared.adapters.pytorch.models.pytorch_label import (
     PytorchLabel,
 )
 
