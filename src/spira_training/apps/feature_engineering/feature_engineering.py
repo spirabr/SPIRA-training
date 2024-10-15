@@ -8,6 +8,8 @@ from tests.fakes.fake_dataset_repository import FakeDatasetRepository
 from tests.fakes.fake_audios_repository import FakeAudiosRepository
 from tests.fakes.fake_path_validator import FakePathValidator
 from tests.fakes.fake_file_reader import FakeFileReader
+from tests.fakes.fake_pytorch_audio_factory import FakePytorchAudioFactory
+
 
 async def main():
     config = JsonConfigLoader().load_feature_engineering_config("path/to/config")
@@ -18,6 +20,7 @@ async def main():
     audios_repository = FakeAudiosRepository()
     file_reader = FakeFileReader()
     path_validator = FakePathValidator()
+    pytorch_audio_factory = FakePytorchAudioFactory()
 
     service = FeatureEngineeringService(
         config=config,
@@ -26,6 +29,7 @@ async def main():
         audios_repository=audios_repository,
         file_reader=file_reader,
         path_validator=path_validator,
+        pytorch_audio_factory=pytorch_audio_factory
     )
 
     # TODO - Get the bucket name to save the dataset
