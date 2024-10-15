@@ -1,6 +1,6 @@
 from typing import Sequence
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.pytorch_model import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_model import (
     PytorchModel,
 )
 

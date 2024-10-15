@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import List
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.scheduler import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.scheduler import (
     Scheduler,
 )
 

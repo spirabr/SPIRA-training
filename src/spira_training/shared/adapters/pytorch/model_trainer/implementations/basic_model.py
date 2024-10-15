@@ -8,15 +8,15 @@ from src.spira_training.shared.adapters.pytorch.models.pytorch_label import (
     PytorchLabel,
 )
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.pytorch_model import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_model import (
     PytorchModel,
 )
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.implementations.mish import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.mish import (
     Mish,
 )
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.cnn_builder import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.cnn_builder import (
     CnnBuilder,
 )
 import torch

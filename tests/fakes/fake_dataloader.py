@@ -8,7 +8,7 @@ from src.spira_training.shared.adapters.pytorch.models.pytorch_batch import (
     PytorchBatch,
 )
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.dataloader import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.dataloader import (
     Dataloader,
 )
 from tests.fakes.fake_model import make_false_label

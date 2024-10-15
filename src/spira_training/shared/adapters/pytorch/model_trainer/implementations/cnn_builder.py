@@ -1,5 +1,5 @@
 import torch
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.cnn_builder import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.cnn_builder import (
     CnnBuilder,
     CnnConfig,
 )
