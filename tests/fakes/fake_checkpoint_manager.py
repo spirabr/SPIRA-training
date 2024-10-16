@@ -1,4 +1,4 @@
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.checkpoint_manager import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.checkpoint_manager import (
     Checkpoint,
     CheckpointManager,
 )

@@ -1,9 +1,9 @@
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_audio import (
+from src.spira_training.shared.adapters.pytorch.models.pytorch_audio import (
     create_empty_wav,
     PytorchAudio,
 )
 from src.spira_training.shared.core.models.audio import Audio
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.pytorch_audio_factory import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_audio_factory import (
     PytorchAudioFactory,
 )
 

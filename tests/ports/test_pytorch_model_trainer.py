@@ -1,5 +1,5 @@
 from src.spira_training.shared.core.models.event import EventTypeEnum
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_model_trainer import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.pytorch_model_trainer import (
     PytorchModelTrainer,
 )
 from typing_extensions import TypedDict
