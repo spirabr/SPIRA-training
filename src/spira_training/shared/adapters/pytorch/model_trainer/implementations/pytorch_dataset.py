@@ -1,14 +1,13 @@
 from typing import List
 
-from src.spira_training.shared.adapters.pytorch.models.pytorch_wav import (
-    PytorchWav,
+from src.spira_training.shared.adapters.pytorch.models.pytorch_tensor import (
+    PytorchTensor,
 )
-from src.spira_training.shared.core.models.dataset import Dataset
 import torch.utils.data
 
 
-class PytorchDataset(torch.utils.data.Dataset, Dataset):
-    def __init__(self, features: List[PytorchWav], labels: list[int]):
+class PytorchDataset(torch.utils.data.Dataset):
+    def __init__(self, features: List[PytorchTensor], labels: list[int]):
         self.features = features
         self.labels = labels
 
