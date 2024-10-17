@@ -1,9 +1,10 @@
 from typing import Sequence
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.loss_calculator import (
+
+from src.spira_training.shared.adapters.pytorch.models.pytorch_label import PytorchLabel
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.loss_calculator import (
     Loss,
     LossCalculator,
 )
-from src.spira_training.shared.core.models.dataset import Label
 
 
 class FakeLossCalculator(LossCalculator):
@@ -12,7 +13,7 @@ class FakeLossCalculator(LossCalculator):
         self.recalculate_weights_calls = 0
 
     def calculate_loss(
-        self, predictions: Sequence[Label], labels: Sequence[Label]
+        self, predictions: Sequence[PytorchLabel], labels: Sequence[PytorchLabel]
     ) -> Loss:
         return self.loss
 
@@ -36,7 +37,7 @@ class FakeCyclingLossCalculator(FakeLossCalculator):
         self._calculate_loss_calls = 0
 
     def calculate_loss(
-        self, predictions: Sequence[Label], labels: Sequence[Label]
+        self, predictions: Sequence[PytorchLabel], labels: Sequence[PytorchLabel]
     ) -> Loss:
         loss = self.cycling_losses[
             self._calculate_loss_calls % len(self.cycling_losses)

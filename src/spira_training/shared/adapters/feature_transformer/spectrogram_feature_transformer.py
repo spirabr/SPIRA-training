@@ -6,7 +6,7 @@ from src.spira_training.shared.ports.feature_transformer import FeatureTransform
 
 
 class SpectrogramFeatureTransformer(FeatureTransformer):
-    def __init__(self, config: 'SpectrogramAudioProcessorConfig', hop_length: int):
+    def __init__(self, config: "SpectrogramAudioProcessorConfig", hop_length: int):
         self.spectrogram = transforms.Spectrogram(
             n_fft=config.n_fft,
             win_length=config.win_length,

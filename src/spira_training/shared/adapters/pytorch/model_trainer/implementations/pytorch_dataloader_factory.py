@@ -1,16 +1,16 @@
 from typing import Literal
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.pytorch_audio_factory import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_audio_factory import (
     PytorchAudioFactory,
 )
 
 from .pytorch_dataset import PytorchDataset
 from .pytorch_dataloader import PytorchDataloader
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.dataloader import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.dataloader import (
     Dataloader,
 )
 from src.spira_training.shared.core.models.dataset import Dataset
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.dataloader_factory import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.dataloader_factory import (
     DataloaderFactory,
 )
 

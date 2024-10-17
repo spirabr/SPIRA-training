@@ -1,12 +1,17 @@
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.interfaces.pytorch_audio_factory import \
-    PytorchAudioFactory
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_audio_factory import (
+    PytorchAudioFactory,
+)
 from src.spira_training.shared.core.models.audio_collection import AudioCollection
 from src.spira_training.shared.core.models.audio import Audio
 from src.spira_training.shared.ports.feature_transformer import FeatureTransformer
 
 
 class AudioProcessor:
-    def __init__(self, feature_transformer: FeatureTransformer, pytorch_audio_factory: PytorchAudioFactory):
+    def __init__(
+        self,
+        feature_transformer: FeatureTransformer,
+        pytorch_audio_factory: PytorchAudioFactory,
+    ):
         self.feature_transformer = feature_transformer
         self.pytorch_audio_factory = pytorch_audio_factory
 

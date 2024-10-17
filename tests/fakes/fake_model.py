@@ -1,11 +1,20 @@
 from typing import List
 
+from src.spira_training.shared.adapters.pytorch.models.pytorch_parameter import (
+    PytorchParameter,
+)
+
+from src.spira_training.shared.adapters.pytorch.models.pytorch_label import (
+    PytorchLabel,
+)
+
+from src.spira_training.shared.adapters.pytorch.models.pytorch_wav import (
+    PytorchWav,
+)
 import torch
 
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_model import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_model import (
     PytorchModel,
-    PytorchLabel,
-    PytorchWav,
 )
 
 
@@ -33,6 +42,9 @@ class FakePytorchModel(PytorchModel):
 
     def load_state(self, state_dict: dict):
         pass
+
+    def get_parameters(self) -> list[PytorchParameter]:
+        return []
 
     def assert_predicted_once(self, feature: PytorchWav):
         self.assert_predicted_times(feature=feature, times=1)

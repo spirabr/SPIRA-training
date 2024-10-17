@@ -1,7 +1,7 @@
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.implementations.pytorch_dataloader import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.pytorch_dataloader import (
     PytorchDataloaderType,
 )
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.implementations.pytorch_dataloader_factory import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.pytorch_dataloader_factory import (
     PytorchDataloaderFactory,
 )
 from tests.base_test_model import BaseTestModel
