@@ -1,7 +1,7 @@
 import torchaudio.transforms as transforms
 
 from src.spira_training.apps.feature_engineering.configs.audio_processor_config import SpectrogramAudioProcessorConfig
-from src.spira_training.shared.adapters.model_trainer.pytorch_model_trainer.pytorch_audio import PytorchWav
+from src.spira_training.shared.core.models.wav import Wav
 from src.spira_training.shared.ports.feature_transformer import FeatureTransformer
 
 
@@ -14,5 +14,5 @@ class SpectrogramFeatureTransformer(FeatureTransformer):
             power=config.power,
         )
 
-    def transform(self, wav: PytorchWav) -> PytorchWav:
+    def transform(self, wav: Wav) -> Wav:
         return self.spectrogram(wav)
