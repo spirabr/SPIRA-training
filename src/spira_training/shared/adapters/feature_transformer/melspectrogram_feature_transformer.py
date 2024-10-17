@@ -2,7 +2,7 @@ import torchaudio.transforms as transforms
 
 from src.spira_training.apps.feature_engineering.configs.audio_processor_config import \
     MelspectrogramAudioProcessorConfig
-from src.spira_training.shared.adapters.pytorch_wav import PytorchWav
+from src.spira_training.shared.core.models.wav import Wav
 from src.spira_training.shared.ports.feature_transformer import FeatureTransformer
 
 
@@ -17,5 +17,5 @@ class MelspectrogramFeatureTransformer(FeatureTransformer):
             n_mels=config.num_mels,
         )
 
-    def transform(self, wav: PytorchWav) -> PytorchWav:
+    def transform(self, wav: Wav) -> Wav:
         return self.melspectrogram(wav)

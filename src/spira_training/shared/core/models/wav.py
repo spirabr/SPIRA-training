@@ -1,39 +1,40 @@
-from abc import ABC, abstractmethod
 from functools import reduce
-from typing import Any, List, Generic, TypeVar
 
-class Wav(ABC):
-    @abstractmethod
+import torch
+from torchaudio.transforms import Resample
+from typing import List
+
+
+class Wav:
+    def __init__(self, tensor):
+        self.tensor = tensor
+
     def resize(self, length: int) -> 'Wav':
-        pass
+        return Wav(self.tensor[0:length])
 
-    @abstractmethod
     def rescale(self, amplitude: float) -> 'Wav':
-        pass
+        return Wav(torch.mul(self.tensor, amplitude / float(self.tensor.max())))
 
-    @abstractmethod
     def combine(self, wav_2: 'Wav') -> 'Wav':
-        pass
+        return Wav(self.tensor + wav_2.tensor)
 
-    @abstractmethod
     def resample(self, actual_sample_rate: int, desired_sample_rate: int) -> 'Wav':
-        pass
+        if desired_sample_rate == actual_sample_rate:
+            return self
+        resample = Resample(actual_sample_rate, desired_sample_rate)
+        return Wav(resample(self.tensor))
 
-    @abstractmethod
     def slice(self, start_index: int, end_index: int) -> 'Wav':
-        pass
+        return Wav(self.tensor[start_index:end_index])
 
-    @abstractmethod
     def concatenate(self, wav: 'Wav') -> 'Wav':
-        pass
+        tensors = [self.tensor, wav.tensor]
+        return Wav(torch.cat(tensors, dim=0))
 
-    @abstractmethod
     def __getattr__(self, name):
-        pass
+        return getattr(self.tensor, name)
 
-W = TypeVar("W", bound=Wav)
-
-def concatenate_wavs(wavs: List[W]) -> W:
+def concatenate_wavs(wavs: List[Wav]) -> Wav:
     if not wavs:
         return None
 
