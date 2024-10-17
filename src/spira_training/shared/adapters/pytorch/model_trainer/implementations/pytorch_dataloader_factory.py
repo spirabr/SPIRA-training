@@ -1,5 +1,9 @@
 from typing import Literal
 
+import torch
+
+from src.spira_training.shared.adapters.pytorch.models.pytorch_label import PytorchLabel
+
 from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_audio_factory import (
     PytorchAudioFactory,
 )
@@ -35,7 +39,7 @@ class PytorchDataloaderFactory(DataloaderFactory):
             self._pytorch_audio_factory.create_pytorch_from_audio(audio).wav
             for audio in dataset.features
         ]
-        labels = [label.value for label in dataset.labels]
+        labels = [PytorchLabel(torch.tensor(label.value)) for label in dataset.labels]
         pytorch_dataset = PytorchDataset(
             features=features,
             labels=labels,
