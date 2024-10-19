@@ -5,7 +5,7 @@ import torch
 from src.spira_training.shared.adapters.pytorch.models.pytorch_label import PytorchLabel
 
 from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_audio_factory import (
-    PytorchAudioFactory,
+    PytorchTensorFactory,
 )
 
 from .pytorch_dataset import PytorchDataset
@@ -27,16 +27,16 @@ class PytorchDataloaderFactory(DataloaderFactory):
         batch_size: int,
         num_workers: int,
         dataloader_type: PytorchDataloaderFactoryType,
-        pytorch_audio_factory: PytorchAudioFactory,
+        pytorch_tensor_factory: PytorchTensorFactory,
     ) -> None:
         self._batch_size = batch_size
         self._num_workers = num_workers
         self._dataloader_type: PytorchDataloaderFactoryType = dataloader_type
-        self._pytorch_audio_factory = pytorch_audio_factory
+        self._pytorch_tensor_factory = pytorch_tensor_factory
 
     def make_dataloader(self, dataset: Dataset) -> Dataloader:
         features = [
-            self._pytorch_audio_factory.create_pytorch_from_audio(audio).wav
+            self._pytorch_tensor_factory.create_tensor_from_audio(audio)
             for audio in dataset.features
         ]
         labels = [PytorchLabel(torch.tensor(label.value)) for label in dataset.labels]

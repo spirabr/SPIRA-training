@@ -6,27 +6,27 @@ from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.py
 )
 from tests.base_test_model import BaseTestModel
 from tests.fakes.fake_dataset_repository import make_dataset
-from tests.fakes.fake_pytorch_audio_factory import FakePytorchAudioFactory
+from tests.fakes.fake_pytorch_audio_factory import FakePytorchTensorFactory
 
 
 class SetupItems(BaseTestModel):
     sut: PytorchDataloaderFactory
-    pytorch_audio_factory: FakePytorchAudioFactory
+    pytorch_tensor_factory: FakePytorchTensorFactory
 
 
 def make_setup(
     dataloader_type: PytorchDataloaderType = "train",
     batch_size: int = 1,
 ):
-    pytorch_audio_factory = FakePytorchAudioFactory()
+    pytorch_tensor_factory = FakePytorchTensorFactory()
     sut = PytorchDataloaderFactory(
         batch_size=batch_size,
         dataloader_type=dataloader_type,
         num_workers=1,
-        pytorch_audio_factory=pytorch_audio_factory,
+        pytorch_tensor_factory=pytorch_tensor_factory,
     )
 
-    return SetupItems(sut=sut, pytorch_audio_factory=pytorch_audio_factory)
+    return SetupItems(sut=sut, pytorch_tensor_factory=pytorch_tensor_factory)
 
 
 def test_train_dataloader_factory_executes():
@@ -55,16 +55,16 @@ def test_get_batches():
     assert result.get_batches() is not None
 
 
-def test_uses_pytorch_audio_factory():
+def test_uses_pytorch_tensor_factory():
     setup = make_setup()
     sut = setup.sut
-    pytorch_audio_factory = setup.pytorch_audio_factory
+    pytorch_tensor_factory = setup.pytorch_tensor_factory
     dataset = make_dataset()
 
     sut.make_dataloader(dataset=dataset)
 
     for feature in dataset.features:
-        pytorch_audio_factory.assert_called_with(feature)
+        pytorch_tensor_factory.assert_called_with(feature)
 
 
 def test_dont_shuffle_test_data():
