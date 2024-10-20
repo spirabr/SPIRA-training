@@ -60,4 +60,6 @@ class FakeCyclingLossCalculator(FakeLossCalculator):
 
 
 def make_loss() -> Loss:
-    return Loss()
+    return Loss(
+        value=0.0,
+    )
