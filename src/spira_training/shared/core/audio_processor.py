@@ -1,5 +1,6 @@
+from spira_training.shared.core.models.wav import Wav
 from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_audio_factory import (
-    PytorchAudioFactory,
+    PytorchTensorFactory,
 )
 from src.spira_training.shared.core.models.audio_collection import AudioCollection
 from src.spira_training.shared.core.models.audio import Audio
@@ -10,14 +11,14 @@ class AudioProcessor:
     def __init__(
         self,
         feature_transformer: FeatureTransformer,
-        pytorch_audio_factory: PytorchAudioFactory,
+        pytorch_tensor_factory: PytorchTensorFactory,
     ):
         self.feature_transformer = feature_transformer
-        self.pytorch_audio_factory = pytorch_audio_factory
+        self.pytorch_tensor_factory = pytorch_tensor_factory
 
     def process_audio(self, audio: Audio) -> Audio:
-        pytorch_audio = self.pytorch_audio_factory.create_pytorch_from_audio(audio)
-        feature_wav = self.feature_transformer.transform(pytorch_audio.wav)
+        pytorch_tensor = self.pytorch_tensor_factory.create_tensor_from_audio(audio)
+        feature_wav = self.feature_transformer.transform(Wav(pytorch_tensor))
         transposed_feature_wav = feature_wav.transpose(1, 2)
         reshaped_feature_wav = transposed_feature_wav.reshape(
             transposed_feature_wav.shape[1:]

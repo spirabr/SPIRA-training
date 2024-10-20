@@ -1,8 +1,8 @@
 from src.spira_training.shared.adapters.pytorch.models.pytorch_parameter import (
     PytorchParameter,
 )
-from src.spira_training.shared.adapters.pytorch.models.pytorch_wav import (
-    PytorchWav,
+from src.spira_training.shared.adapters.pytorch.models.pytorch_tensor import (
+    PytorchTensor,
 )
 from src.spira_training.shared.adapters.pytorch.models.pytorch_label import (
     PytorchLabel,
@@ -91,10 +91,10 @@ class BasicModel(PytorchModel):
     def load_state(self, state_dict: dict):
         self._inner_model.load_state_dict(state_dict)
 
-    def predict(self, feature: PytorchWav) -> PytorchLabel:
+    def predict(self, feature: PytorchTensor) -> PytorchLabel:
         return self._inner_model(feature)
 
-    def predict_batch(self, features_batch: list[PytorchWav]) -> list[PytorchLabel]:
+    def predict_batch(self, features_batch: list[PytorchTensor]) -> list[PytorchLabel]:
         return self._inner_model(torch.tensor(features_batch))
 
     def get_parameters(self) -> list[PytorchParameter]:

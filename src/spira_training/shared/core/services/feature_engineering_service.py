@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_audio_factory import (
-    PytorchAudioFactory,
+    PytorchTensorFactory,
 )
 
 from src.spira_training.apps.feature_engineering.configs.feature_engineering_config import (
@@ -27,7 +27,7 @@ class FeatureEngineeringService:
         audios_repository: AudiosRepository,
         file_reader: FileReader,
         path_validator: PathValidator,
-        pytorch_audio_factory: PytorchAudioFactory,
+        pytorch_audio_factory: PytorchTensorFactory,
     ):
         self.pytorch_audio_factory = pytorch_audio_factory
         self.config = config
@@ -46,7 +46,7 @@ class FeatureEngineeringService:
 
         dataset = self._generate_dataset()
 
-        await self.dataset_repository.save_dataset(dataset, save_dataset_path)
+        await self.dataset_repository.save_dataset(dataset, save_dataset_path)  # type: ignore
 
     def _load_data(self):
         patients_inputs = self._load_audio_data(

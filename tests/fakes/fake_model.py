@@ -8,8 +8,8 @@ from src.spira_training.shared.adapters.pytorch.models.pytorch_label import (
     PytorchLabel,
 )
 
-from src.spira_training.shared.adapters.pytorch.models.pytorch_wav import (
-    PytorchWav,
+from src.spira_training.shared.adapters.pytorch.models.pytorch_tensor import (
+    PytorchTensor,
 )
 import torch
 
@@ -22,7 +22,7 @@ class FakePytorchModel(PytorchModel):
     def __init__(self) -> None:
         self._predicted = {}
 
-    def predict(self, feature: PytorchWav) -> PytorchLabel:
+    def predict(self, feature: PytorchTensor) -> PytorchLabel:
         if self._predicted.get(feature):
             self._predicted[feature] += 1
         else:
@@ -30,7 +30,7 @@ class FakePytorchModel(PytorchModel):
 
         return make_false_label()
 
-    def predict_batch(self, features_batch: List[PytorchWav]) -> List[PytorchLabel]:
+    def predict_batch(self, features_batch: List[PytorchTensor]) -> List[PytorchLabel]:
         labels = []
         for feature in features_batch:
             label = self.predict(feature)
@@ -46,10 +46,10 @@ class FakePytorchModel(PytorchModel):
     def get_parameters(self) -> list[PytorchParameter]:
         return []
 
-    def assert_predicted_once(self, feature: PytorchWav):
+    def assert_predicted_once(self, feature: PytorchTensor):
         self.assert_predicted_times(feature=feature, times=1)
 
-    def assert_predicted_times(self, feature: PytorchWav, times: int):
+    def assert_predicted_times(self, feature: PytorchTensor, times: int):
         feature_times = self._predicted.get(feature, 0)
         assert (
             times <= 0 or feature_times > 0
@@ -59,7 +59,7 @@ class FakePytorchModel(PytorchModel):
             feature_times == times
         ), f"Feature {self._feature_str(feature)} expected to be trained {times} times, but was {feature_times}"
 
-    def _feature_str(self, feature: PytorchWav) -> str:
+    def _feature_str(self, feature: PytorchTensor) -> str:
         return str(hash(feature))
 
     def _feature_set_str(self, feature_set: dict):
