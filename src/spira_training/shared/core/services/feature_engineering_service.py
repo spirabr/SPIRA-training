@@ -1,8 +1,5 @@
 from pathlib import Path
 
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_audio_factory import (
-    PytorchAudioFactory,
-)
 
 from src.spira_training.apps.feature_engineering.configs.feature_engineering_config import (
     FeatureEngineeringConfig,
@@ -27,9 +24,7 @@ class FeatureEngineeringService:
         audios_repository: AudiosRepository,
         file_reader: FileReader,
         path_validator: PathValidator,
-        pytorch_audio_factory: PytorchAudioFactory,
     ):
-        self.pytorch_audio_factory = pytorch_audio_factory
         self.config = config
         self.randomizer = randomizer
         self.dataset_repository = dataset_repository
@@ -40,9 +35,7 @@ class FeatureEngineeringService:
     async def execute(self, save_dataset_path: Path) -> None:
         patients_inputs, controls_inputs, noises = self._load_data()
 
-        audio_processor = create_audio_processor(
-            self.config.audio_processor, self.pytorch_audio_factory
-        )
+        audio_processor = create_audio_processor(self.config.audio_processor)
 
         dataset = self._generate_dataset()
 
