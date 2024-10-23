@@ -34,8 +34,13 @@ class Wav:
     def __getattr__(self, name):
         return getattr(self.tensor, name)
 
+
 def concatenate_wavs(wavs: List[Wav]) -> Wav:
     if not wavs:
         return None
 
     return reduce(lambda acc, wav: acc.concatenate(wav), wavs)
+
+
+def create_empty_wav() -> Wav:
+    return Wav(torch.empty(0))
