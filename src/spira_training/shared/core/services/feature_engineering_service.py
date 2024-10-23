@@ -24,6 +24,7 @@ class FeatureEngineeringService:
         audios_repository: AudiosRepository,
         file_reader: FileReader,
         path_validator: PathValidator,
+        pytorch_audio_factory: PytorchTensorFactory,
     ):
         self.config = config
         self.randomizer = randomizer
@@ -39,7 +40,7 @@ class FeatureEngineeringService:
 
         dataset = self._generate_dataset()
 
-        await self.dataset_repository.save_dataset(dataset, save_dataset_path)
+        await self.dataset_repository.save_dataset(dataset, save_dataset_path)  # type: ignore
 
     def _load_data(self):
         patients_inputs = self._load_audio_data(
