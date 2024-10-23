@@ -24,7 +24,6 @@ class FeatureEngineeringService:
         audios_repository: AudiosRepository,
         file_reader: FileReader,
         path_validator: PathValidator,
-        pytorch_audio_factory: PytorchTensorFactory,
     ):
         self.config = config
         self.randomizer = randomizer
