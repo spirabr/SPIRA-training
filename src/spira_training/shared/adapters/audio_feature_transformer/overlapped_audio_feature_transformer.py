@@ -11,13 +11,13 @@ class OverlappedAudioFeatureTransformer(AudioFeatureTransformer):
         self.window_length = window_length
         self.step_size = step_size
 
-    def transform_into_features(self, audios: AudioCollection) -> AudioCollection:
+    def transform_into_features(self, audio_collection: AudioCollection) -> AudioCollection:
 
-        return self._overlap_audio_collection(audios)
+        return self._overlap_audio_collection(audio_collection)
 
-    def _overlap_audio_collection(self, audios: AudioCollection) -> AudioCollection:
+    def _overlap_audio_collection(self, audio_collection: AudioCollection) -> AudioCollection:
         return AudioCollection(
-            [self._overlap_audio(audio) for audio in audios]
+            [self._overlap_audio(audio) for audio in audio_collection]
         )
 
     def _overlap_audio(self, audio: Audio) -> Audio:

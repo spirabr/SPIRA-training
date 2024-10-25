@@ -8,7 +8,7 @@ class PaddedAudioFeatureTransformer(AudioFeatureTransformer):
     def __init__(self, audio_processor: AudioProcessor):
         self.audio_processor = audio_processor
 
-    def transform_into_features(self, audios: AudioCollection) -> AudioCollection:
-        processed_audios = self.audio_processor.process_audios(audios)
+    def transform_into_features(self, audio_collection: AudioCollection) -> AudioCollection:
+        processed_audios = self.audio_processor.process_audios(audio_collection)
 
         return add_padding_to_audio_collection(processed_audios)

@@ -19,6 +19,6 @@ class AudioProcessor:
         )
         return Audio(wav=reshaped_feature_wav, sample_rate=audio.sample_rate)
 
-    def process_audios(self, audios: AudioCollection | GeneratedAudioCollection) -> AudioCollection | GeneratedAudioCollection:
-        audio_list = [self.process_audio(audio) for audio in audios]
-        return audios.copy_using(audios=audio_list)
+    def process_audios(self, audio_collection: AudioCollection | GeneratedAudioCollection) -> AudioCollection | GeneratedAudioCollection:
+        audio_list = [self.process_audio(audio) for audio in audio_collection]
+        return audio_collection.copy_using(audios=audio_list)

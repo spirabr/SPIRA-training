@@ -5,7 +5,7 @@ class AudioFeatureTransformerPipeline(AudioFeatureTransformer):
     def __init__(self, transformers: list[AudioFeatureTransformer]):
         self.transformers = transformers
 
-    def transform_into_features(self, audios: AudioCollection) -> AudioCollection:
+    def transform_into_features(self, audio_collection: AudioCollection) -> AudioCollection:
         for transformer in self.transformers:
-            audios = transformer.transform_into_features(audios)
-        return audios
+            audio_collection = transformer.transform_into_features(audio_collection)
+        return audio_collection

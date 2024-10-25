@@ -1,3 +1,5 @@
+from typing import Iterable
+
 from src.spira_training.shared.core.models.audio import Audio
 from src.spira_training.shared.core.models.audio_collection import AudioCollection
 from src.spira_training.shared.core.models.generated_audio_collection import GeneratedAudioCollection
@@ -31,27 +33,41 @@ def _create_slice(self, start_index: int, end_index: int) -> 'Audio':
         )
     )
 
-def concatenate_audios(audios: AudioCollection | GeneratedAudioCollection) -> Audio:
-    if len(audios) == 0:
+def concatenate_audios(audio_collection: AudioCollection | GeneratedAudioCollection) -> Audio:
+    if len(audio_collection) == 0:
         return Audio(wav=create_empty_wav(), sample_rate=0)
 
-    if _check_audios_have_different_sample_rate(audios):
+    if _check_audios_have_different_sample_rate(audio_collection):
         raise ValueError("Sample rates are not equal")
 
-    wav_list = [audio.wav for audio in audios]
+    wav_list = [audio.wav for audio in audio_collection]
     concatenated_wav = concatenate_wavs(wav_list)
 
-    return Audio(concatenated_wav, sample_rate=audios[0].sample_rate)
+    return Audio(concatenated_wav, sample_rate=audio_collection[0].sample_rate)
 
-def _check_audios_have_different_sample_rate(audios: GeneratedAudioCollection) -> bool:
-    sample_rates = {audio.sample_rate for audio in audios}
+def _check_audios_have_different_sample_rate(audio_collection: GeneratedAudioCollection) -> bool:
+    sample_rates = {audio.sample_rate for audio in audio_collection}
     return len(sample_rates) > 1
 
 
-def add_padding_to_audio_collection(audios: AudioCollection) -> AudioCollection:
-    max_audio_length = audios.get_max_audio_length()
+def add_padding_to_audio_collection(audio_collection: AudioCollection) -> AudioCollection:
+    max_audio_length = audio_collection.get_max_audio_length()
 
     return AudioCollection(
-        [audio.add_padding(max_audio_length) for audio in audios],
-        audios.hop_length
+        [audio.add_padding(max_audio_length) for audio in audio_collection],
+        audio_collection.hop_length
     )
+
+def get_pairs_of_audios(audio_collection: AudioCollection) -> Iterable[tuple[Audio, Audio]]:
+    iterator = iter(audio_collection.audio_list)
+    while True:
+        try:
+            yield next(iterator), next(iterator)
+        except StopIteration:
+            break
+
+def mix_audios(self, first: Audio, second: Audio) -> tuple[Audio, Audio]:
+    probability = self.randomizer.get_probability(self.alpha, self.beta)
+    new_first = first * probability + second * (1 - probability)
+    new_second = first * (1 - probability) + second * probability
+    return new_first, new_second
