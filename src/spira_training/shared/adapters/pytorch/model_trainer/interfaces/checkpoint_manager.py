@@ -3,11 +3,12 @@ from abc import ABC, abstractmethod
 from pydantic import BaseModel
 
 from src.spira_training.shared.core.models.loss import Loss
+from src.spira_training.shared.core.models.step import Step
 
 
 class Checkpoint(BaseModel):
     loss: Loss
-    step: int
+    step: Step
 
 
 class CheckpointManager(ABC):
