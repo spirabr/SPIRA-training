@@ -1,7 +1,9 @@
-from ctypes import cast
 import math
 import os
-from typing import Optional, Self
+from typing import Optional, cast
+from typing_extensions import Self
+
+from src.spira_training.shared.ports.path_validator import PathValidator
 from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.pytorch_optimizer_wrapper import (
     PytorchOptimizerWrapper,
 )
@@ -19,13 +21,15 @@ class Checkpoint:
         self.model_state = checkpoint_state["model"]
         self.optimizer_state = checkpoint_state["optimizer"]
         self.validation_loss = checkpoint_state["validation_loss"]
-        self.step = int(checkpoint_state["step"])
+        self.step = Step(checkpoint_state["step"])
 
     @classmethod
     def create_initial_checkpoint(
         cls, model: PytorchModel, optimizer: PytorchOptimizerWrapper
     ) -> Self:
-        return cast(Self, Checkpoint.create(model, optimizer, Loss(math.inf), 0))
+        return cast(
+            Self, Checkpoint.create(model, optimizer, Loss(value=math.inf), Step(0))
+        )
 
     @classmethod
     def load(cls, checkpoint_path: ValidPath) -> Self:
@@ -64,12 +68,18 @@ class Checkpoint:
 
 
 class FileSystemCheckpointBuilder:
-    def __init__(self, checkpoint_dir: ValidPath, checkpoint_interval: int):
+    def __init__(
+        self,
+        checkpoint_dir: ValidPath,
+        checkpoint_interval: int,
+        fs_path_validator: PathValidator,
+    ):
         if checkpoint_interval <= 1:
             raise ValueError("Checkpoint interval should be greater than one")
 
         self.checkpoint_dir = checkpoint_dir
         self.checkpoint_interval = checkpoint_interval
+        self.fs_path_validator = fs_path_validator
 
     def create_checkpoint(
         self,
@@ -85,13 +95,13 @@ class FileSystemCheckpointBuilder:
         )
 
     def save_checkpoint_with_step(self, checkpoint: Checkpoint):
-        checkpoint_path = ValidPath.from_str(
+        checkpoint_path = self.fs_path_validator.validate_path(
             os.path.join(self.checkpoint_dir, f"checkpoint_{checkpoint.step}.pt")
         )
         checkpoint.save(checkpoint_path)
 
     def save_checkpoint_with_prefix(self, checkpoint: Checkpoint, prefix: str):
-        checkpoint_path = ValidPath.from_str(
+        checkpoint_path = self.fs_path_validator.validate_path(
             os.path.join(self.checkpoint_dir, f"{prefix}_checkpoint.pt")
         )
         checkpoint.save(checkpoint_path)
@@ -115,8 +125,8 @@ class PytorchCheckpointManager:
         self.last_checkpoint = self._initialize_checkpoint(initial_checkpoint)
         self.best_checkpoint = self.last_checkpoint
 
-    def update_and_save_checkpoints(self, loss: Loss):
-        self._update_checkpoints(loss, loss.step)
+    def update_and_save_checkpoints(self, loss: Loss, step: Step):
+        self._update_checkpoints(loss, step)
         self._save_checkpoints()
 
     def _update_checkpoints(self, loss: Loss, step: Step):
