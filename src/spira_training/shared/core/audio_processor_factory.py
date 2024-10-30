@@ -1,6 +1,3 @@
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_audio_factory import (
-    PytorchTensorFactory,
-)
 from src.spira_training.apps.feature_engineering.configs.audio_processor_config import (
     AudioProcessorType,
     AudioProcessorConfig,
@@ -19,13 +16,12 @@ from src.spira_training.shared.ports.feature_transformer import FeatureTransform
 
 
 def create_audio_processor(
-    config: AudioProcessorConfig, pytorch_tensor_factory: PytorchTensorFactory
+    config: AudioProcessorConfig
 ) -> AudioProcessor:
     feature_transformer = create_feature_transformer(config)
 
     return AudioProcessor(
         feature_transformer=feature_transformer,
-        pytorch_tensor_factory=pytorch_tensor_factory,
     )
 
 
