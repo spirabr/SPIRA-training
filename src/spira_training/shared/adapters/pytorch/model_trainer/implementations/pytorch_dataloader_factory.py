@@ -1,5 +1,8 @@
 from typing import Literal
 
+from src.spira_training.shared.adapters.pytorch.models.pytorch_dataset import (
+    PytorchDataset,
+)
 import torch
 
 from src.spira_training.shared.adapters.pytorch.models.pytorch_label import PytorchLabel
@@ -8,7 +11,6 @@ from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch
     PytorchTensorFactory,
 )
 
-from .pytorch_dataset import PytorchDataset
 from .simple_pytorch_dataloader import SimplePytorchDataloader
 from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_dataloader import (
     PytorchDataloader,
