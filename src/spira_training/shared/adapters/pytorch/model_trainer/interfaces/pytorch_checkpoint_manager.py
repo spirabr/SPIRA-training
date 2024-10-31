@@ -11,6 +11,6 @@ class Checkpoint(BaseModel):
     step: Step
 
 
-class CheckpointManager(ABC):
+class PytorchCheckpointManager(ABC):
     @abstractmethod
     def update_and_save_checkpoint(self, checkpoint: Checkpoint) -> None: ...
