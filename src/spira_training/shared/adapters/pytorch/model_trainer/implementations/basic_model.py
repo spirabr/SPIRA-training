@@ -16,15 +16,15 @@ from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.mi
     Mish,
 )
 
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.cnn_builder import (
-    CnnBuilder,
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_cnn_builder import (
+    PytorchCnnBuilder,
 )
 import torch
 import torch.nn as nn
 
 
 class InnerTorchModel(nn.Module):
-    def __init__(self, cnn_builder: CnnBuilder):
+    def __init__(self, cnn_builder: PytorchCnnBuilder):
         super().__init__()
 
         self.conv = self._build_cnn()
