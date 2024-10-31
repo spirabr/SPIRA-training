@@ -3,14 +3,14 @@ from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch
 )
 from src.spira_training.shared.core.models.dataset import Dataset
 
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.dataloader_factory import (
-    DataloaderFactory,
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_dataloader_factory import (
+    PytorchDataloaderFactory,
 )
 
 from tests.fakes.fake_dataloader import FakeDataloader, make_batches
 
 
-class FakeDataloaderFactory(DataloaderFactory):
+class FakeDataloaderFactory(PytorchDataloaderFactory):
     def __init__(self):
         self.dataloader = FakeDataloader(batches=make_batches())
 

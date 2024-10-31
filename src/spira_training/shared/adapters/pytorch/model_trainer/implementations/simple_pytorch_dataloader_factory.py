@@ -16,14 +16,14 @@ from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch
     PytorchDataloader,
 )
 from src.spira_training.shared.core.models.dataset import Dataset
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.dataloader_factory import (
-    DataloaderFactory,
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_dataloader_factory import (
+    PytorchDataloaderFactory,
 )
 
 PytorchDataloaderFactoryType = Literal["train", "test"]
 
 
-class PytorchDataloaderFactory(DataloaderFactory):
+class SimplePytorchDataloaderFactory(PytorchDataloaderFactory):
     def __init__(
         self,
         batch_size: int,

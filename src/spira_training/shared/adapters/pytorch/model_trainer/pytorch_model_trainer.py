@@ -16,7 +16,7 @@ from src.spira_training.shared.ports.train_logger import TrainLogger
 
 from src.spira_training.shared.core.models.dataset import Dataset
 
-from .interfaces.dataloader_factory import DataloaderFactory
+from .interfaces.pytorch_dataloader_factory import PytorchDataloaderFactory
 from .interfaces.pytorch_optimizer import PytorchOptimizer
 from .interfaces.pytorch_loss_calculator import PytorchLossCalculator
 from .interfaces.pytorch_scheduler import PytorchScheduler
@@ -34,8 +34,8 @@ class PytorchModelTrainer(ModelTrainer):
         self,
         base_model: BaseModel,
         optimizer: PytorchOptimizer,
-        train_dataloader_factory: DataloaderFactory,
-        test_dataloader_factory: DataloaderFactory,
+        train_dataloader_factory: PytorchDataloaderFactory,
+        test_dataloader_factory: PytorchDataloaderFactory,
         train_loss_calculator: PytorchLossCalculator,
         test_loss_calculator: PytorchLossCalculator,
         train_logger: TrainLogger,
