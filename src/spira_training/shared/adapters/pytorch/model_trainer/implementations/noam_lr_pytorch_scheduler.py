@@ -9,12 +9,12 @@ from .simple_pytorch_optimizer import SimplePytorchOptimizer
 import torch
 
 
-class PytorchLRScheduler(torch.optim.lr_scheduler.LRScheduler, PytorchScheduler):
+class LrPytorchScheduler(torch.optim.lr_scheduler.LRScheduler, PytorchScheduler):
     @abstractmethod
     def get_lr(self) -> List[float]: ...
 
 
-class NoamLRScheduler(PytorchLRScheduler):
+class NoamLRPytorchScheduler(LrPytorchScheduler):
     def __init__(
         self, pytorch_optimizer_wrapper: SimplePytorchOptimizer, warmup_steps: float
     ):
@@ -22,7 +22,7 @@ class NoamLRScheduler(PytorchLRScheduler):
 
         self.warmup_steps = float(warmup_steps)
 
-        self.scheduler = NoamLRScheduler(
+        self.scheduler = NoamLRPytorchScheduler(
             pytorch_optimizer_wrapper, warmup_steps=warmup_steps
         )
 
