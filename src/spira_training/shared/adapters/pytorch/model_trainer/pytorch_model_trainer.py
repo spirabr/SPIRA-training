@@ -17,7 +17,7 @@ from src.spira_training.shared.ports.train_logger import TrainLogger
 from src.spira_training.shared.core.models.dataset import Dataset
 
 from .interfaces.dataloader_factory import DataloaderFactory
-from .interfaces.optimizer import Optimizer
+from .interfaces.pytorch_optimizer import PytorchOptimizer
 from .interfaces.loss_calculator import LossCalculator
 from .interfaces.pytorch_scheduler import PytorchScheduler
 from .interfaces.checkpoint_manager import Checkpoint, CheckpointManager
@@ -33,7 +33,7 @@ class PytorchModelTrainer(ModelTrainer):
     def __init__(
         self,
         base_model: BaseModel,
-        optimizer: Optimizer,
+        optimizer: PytorchOptimizer,
         train_dataloader_factory: DataloaderFactory,
         test_dataloader_factory: DataloaderFactory,
         train_loss_calculator: LossCalculator,

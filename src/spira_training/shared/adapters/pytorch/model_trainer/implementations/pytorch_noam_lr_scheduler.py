@@ -5,7 +5,7 @@ from spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_sch
     PytorchScheduler,
 )
 
-from .pytorch_optimizer_wrapper import PytorchOptimizerWrapper
+from .simple_pytorch_optimizer import SimplePytorchOptimizer
 import torch
 
 
@@ -16,7 +16,7 @@ class PytorchLRScheduler(torch.optim.lr_scheduler.LRScheduler, PytorchScheduler)
 
 class NoamLRScheduler(PytorchLRScheduler):
     def __init__(
-        self, pytorch_optimizer_wrapper: PytorchOptimizerWrapper, warmup_steps: float
+        self, pytorch_optimizer_wrapper: SimplePytorchOptimizer, warmup_steps: float
     ):
         super().__init__(pytorch_optimizer_wrapper.torch_optimizer)
 

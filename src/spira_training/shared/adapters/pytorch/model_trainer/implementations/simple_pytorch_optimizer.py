@@ -1,10 +1,10 @@
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.optimizer import (
-    Optimizer,
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_optimizer import (
+    PytorchOptimizer,
 )
 import torch
 
 
-class PytorchOptimizerWrapper(Optimizer):
+class SimplePytorchOptimizer(PytorchOptimizer):
     def __init__(self, torch_optimizer: torch.optim.optimizer.Optimizer):
         self.torch_optimizer = torch_optimizer
 

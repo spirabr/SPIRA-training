@@ -1,12 +1,12 @@
 import math
 import os
 from typing import Optional, cast
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_optimizer import (
+    PytorchOptimizer,
+)
 from typing_extensions import Self
 
 from src.spira_training.shared.ports.path_validator import PathValidator
-from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.pytorch_optimizer_wrapper import (
-    PytorchOptimizerWrapper,
-)
 from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_model import (
     PytorchModel,
 )
@@ -25,7 +25,7 @@ class Checkpoint:
 
     @classmethod
     def create_initial_checkpoint(
-        cls, model: PytorchModel, optimizer: PytorchOptimizerWrapper
+        cls, model: PytorchModel, optimizer: PytorchOptimizer
     ) -> Self:
         return cast(
             Self, Checkpoint.create(model, optimizer, Loss(value=math.inf), Step(0))
@@ -36,7 +36,7 @@ class Checkpoint:
         checkpoint_state = torch.load(checkpoint_path, map_location="cpu")
         return cast(Self, Checkpoint(checkpoint_state))
 
-    def restore(self, model: PytorchModel, optimizer: PytorchOptimizerWrapper) -> Step:
+    def restore(self, model: PytorchModel, optimizer: PytorchOptimizer) -> Step:
         model.load_state(self.model_state)
         optimizer.load_state(self.optimizer_state)
         return self.step
@@ -45,7 +45,7 @@ class Checkpoint:
     def create(
         cls,
         model: PytorchModel,
-        optimizer: PytorchOptimizerWrapper,
+        optimizer: PytorchOptimizer,
         validation_loss: Loss,
         step: Step,
     ) -> Self:
@@ -84,7 +84,7 @@ class FileSystemCheckpointBuilder:
     def create_checkpoint(
         self,
         model: PytorchModel,
-        optimizer: PytorchOptimizerWrapper,
+        optimizer: PytorchOptimizer,
         loss: Loss,
         step: Step,
     ) -> Optional[Checkpoint]:
@@ -115,7 +115,7 @@ class PytorchCheckpointManager:
         self,
         checkpoint_builder: FileSystemCheckpointBuilder,
         model: PytorchModel,
-        optimizer: PytorchOptimizerWrapper,
+        optimizer: PytorchOptimizer,
         initial_checkpoint: Optional[Checkpoint],
     ):
         self.model = model
