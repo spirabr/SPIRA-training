@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_audio_factory import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_tensor_factory import (
     PytorchTensorFactory,
 )
 
