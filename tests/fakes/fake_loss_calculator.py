@@ -1,13 +1,13 @@
 from typing import Sequence
 
 from src.spira_training.shared.adapters.pytorch.models.pytorch_label import PytorchLabel
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.loss_calculator import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_loss_calculator import (
     Loss,
-    LossCalculator,
+    PytorchLossCalculator,
 )
 
 
-class FakeLossCalculator(LossCalculator):
+class FakeLossCalculator(PytorchLossCalculator):
     def __init__(self):
         self.loss = make_loss()
         self.recalculate_weights_calls = 0
