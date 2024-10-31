@@ -1,15 +1,15 @@
 from abc import abstractmethod
 from typing import List
 
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.scheduler import (
-    Scheduler,
+from spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_scheduler import (
+    PytorchScheduler,
 )
 
 from .pytorch_optimizer_wrapper import PytorchOptimizerWrapper
 import torch
 
 
-class PytorchLRScheduler(torch.optim.lr_scheduler.LRScheduler, Scheduler):
+class PytorchLRScheduler(torch.optim.lr_scheduler.LRScheduler, PytorchScheduler):
     @abstractmethod
     def get_lr(self) -> List[float]: ...
 

@@ -19,7 +19,7 @@ from src.spira_training.shared.core.models.dataset import Dataset
 from .interfaces.dataloader_factory import DataloaderFactory
 from .interfaces.optimizer import Optimizer
 from .interfaces.loss_calculator import LossCalculator
-from .interfaces.scheduler import Scheduler
+from .interfaces.pytorch_scheduler import PytorchScheduler
 from .interfaces.checkpoint_manager import Checkpoint, CheckpointManager
 
 from src.spira_training.shared.ports.model_trainer import ModelTrainer
@@ -39,7 +39,7 @@ class PytorchModelTrainer(ModelTrainer):
         train_loss_calculator: LossCalculator,
         test_loss_calculator: LossCalculator,
         train_logger: TrainLogger,
-        scheduler: Scheduler,
+        scheduler: PytorchScheduler,
         checkpoint_manager: CheckpointManager,
     ) -> None:
         self._model = base_model

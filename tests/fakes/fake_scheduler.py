@@ -1,9 +1,9 @@
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.scheduler import (
-    Scheduler,
+from spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_scheduler import (
+    PytorchScheduler,
 )
 
 
-class FakeScheduler(Scheduler):
+class FakeScheduler(PytorchScheduler):
     def __init__(self):
         self.step_calls = 0
 
