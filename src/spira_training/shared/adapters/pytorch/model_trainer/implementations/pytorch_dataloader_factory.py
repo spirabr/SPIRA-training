@@ -9,9 +9,9 @@ from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch
 )
 
 from .pytorch_dataset import PytorchDataset
-from .pytorch_dataloader import PytorchDataloader
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.dataloader import (
-    Dataloader,
+from .simple_pytorch_dataloader import SimplePytorchDataloader
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_dataloader import (
+    PytorchDataloader,
 )
 from src.spira_training.shared.core.models.dataset import Dataset
 from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.dataloader_factory import (
@@ -34,7 +34,7 @@ class PytorchDataloaderFactory(DataloaderFactory):
         self._dataloader_type: PytorchDataloaderFactoryType = dataloader_type
         self._pytorch_tensor_factory = pytorch_tensor_factory
 
-    def make_dataloader(self, dataset: Dataset) -> Dataloader:
+    def make_dataloader(self, dataset: Dataset) -> PytorchDataloader:
         features = [
             self._pytorch_tensor_factory.create_tensor_from_audio(audio)
             for audio in dataset.features
@@ -44,7 +44,7 @@ class PytorchDataloaderFactory(DataloaderFactory):
             features=features,
             labels=labels,
         )
-        return PytorchDataloader(
+        return SimplePytorchDataloader(
             dataset=pytorch_dataset,
             batch_size=self._batch_size,
             num_workers=self._num_workers,

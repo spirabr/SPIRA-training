@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from .dataloader import Dataloader
+from .pytorch_dataloader import PytorchDataloader
 from src.spira_training.shared.core.models.dataset import Dataset
 
 
 class DataloaderFactory(ABC):
     @abstractmethod
-    def make_dataloader(self, dataset: Dataset) -> Dataloader: ...
+    def make_dataloader(self, dataset: Dataset) -> PytorchDataloader: ...

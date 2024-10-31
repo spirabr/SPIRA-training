@@ -1,4 +1,4 @@
-from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.pytorch_dataloader import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.simple_pytorch_dataloader import (
     PytorchDataloaderType,
 )
 from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.pytorch_dataloader_factory import (
