@@ -3,14 +3,14 @@ from pydantic import BaseModel
 import torch.nn as nn
 
 
-class CnnConfig(BaseModel):
+class PytorchCnnConfig(BaseModel):
     name: str
     fc1_dim: int
     fc2_dim: int
 
 
-class CnnBuilder(ABC):
-    def __init__(self, config: CnnConfig, num_features: int):
+class PytorchCnnBuilder(ABC):
+    def __init__(self, config: PytorchCnnConfig, num_features: int):
         self.config = config
         self.num_features = num_features
 

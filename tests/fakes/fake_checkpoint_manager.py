@@ -1,10 +1,10 @@
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.checkpoint_manager import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_checkpoint_manager import (
     Checkpoint,
-    CheckpointManager,
+    PytorchCheckpointManager,
 )
 
 
-class FakeCheckpointManager(CheckpointManager):
+class FakeCheckpointManager(PytorchCheckpointManager):
     def __init__(self) -> None:
         self.checkpoints: list[Checkpoint] = []
 

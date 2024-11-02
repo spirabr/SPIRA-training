@@ -7,7 +7,7 @@ from src.spira_training.shared.adapters.pytorch.models.pytorch_label import (
 )
 
 
-class LossCalculator(ABC):
+class PytorchLossCalculator(ABC):
     @abstractmethod
     def calculate_loss(
         self, predictions: Sequence[PytorchLabel], labels: Sequence[PytorchLabel]

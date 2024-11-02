@@ -1,7 +1,7 @@
 from spira_training.shared.adapters.pytorch.models.pytorch_tensor import PytorchTensor
 import torch
 from src.spira_training.shared.core.models.audio import Audio
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_audio_factory import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_tensor_factory import (
     PytorchTensorFactory,
 )
 

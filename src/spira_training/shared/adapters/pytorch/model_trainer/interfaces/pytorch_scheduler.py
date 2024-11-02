@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class Scheduler(ABC):
+class PytorchScheduler(ABC):
     @abstractmethod
     def step(self) -> None:
         pass

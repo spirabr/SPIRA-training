@@ -6,6 +6,6 @@ from src.spira_training.shared.adapters.pytorch.models.pytorch_batch import (
 )
 
 
-class Dataloader(ABC):
+class PytorchDataloader(ABC):
     @abstractmethod
     def get_batches(self) -> Sequence[PytorchBatch]: ...

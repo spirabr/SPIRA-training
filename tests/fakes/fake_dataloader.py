@@ -4,14 +4,14 @@ from src.spira_training.shared.adapters.pytorch.models.pytorch_batch import (
     PytorchBatch,
 )
 
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.dataloader import (
-    Dataloader,
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_dataloader import (
+    PytorchDataloader,
 )
 from tests.fakes.fake_model import make_false_label
 from tests.fakes.fake_pytorch_audio_factory import create_empty_tensor
 
 
-class FakeDataloader(Dataloader):
+class FakeDataloader(PytorchDataloader):
     def __init__(self, batches: List[PytorchBatch]):
         self._batches = batches
 

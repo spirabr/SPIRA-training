@@ -3,15 +3,15 @@ from spira_training.shared.adapters.pytorch.models.pytorch_label import PytorchL
 from spira_training.shared.adapters.pytorch.models.pytorch_tensor import PytorchTensor
 from spira_training.shared.core.models.loss import Loss
 import torch
-from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.loss_calculator.single_loss_calculator import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.pytorch_loss_calculator.single_loss_calculator import (
     SingleLossCalculator,
 )
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.loss_calculator import (
-    LossCalculator,
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_loss_calculator import (
+    PytorchLossCalculator,
 )
 
 
-class AverageMultipleLossCalculator(LossCalculator):
+class AverageMultipleLossCalculator(PytorchLossCalculator):
     def __init__(self, single_loss_calculator: SingleLossCalculator):
         super().__init__()
         self.single_loss_calculator = single_loss_calculator
@@ -35,7 +35,7 @@ class AverageMultipleLossCalculator(LossCalculator):
         self.single_loss_calculator.recalculate_weights()
 
 
-class BalancedAverageMultipleLossCalculator(LossCalculator):
+class BalancedAverageMultipleLossCalculator(PytorchLossCalculator):
     def __init__(self, single_loss_calculator: SingleLossCalculator):
         super().__init__()
         self.single_loss_calculators = single_loss_calculator

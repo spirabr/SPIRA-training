@@ -1,5 +1,5 @@
 from spira_training.shared.core.models.wav import Wav
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_audio_factory import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_tensor_factory import (
     PytorchTensorFactory,
 )
 from src.spira_training.shared.core.models.audio_collection import AudioCollection

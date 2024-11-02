@@ -1,12 +1,15 @@
 from typing import Literal, Sequence
 
+from src.spira_training.shared.adapters.pytorch.models.pytorch_dataset import (
+    PytorchDataset,
+)
+
 from src.spira_training.shared.adapters.pytorch.models.pytorch_batch import (
     PytorchBatch,
 )
 
-from .pytorch_dataset import PytorchDataset
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.dataloader import (
-    Dataloader,
+from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_dataloader import (
+    PytorchDataloader,
 )
 from torch.utils.data import DataLoader as PytorchDataLoader
 
@@ -14,7 +17,7 @@ from torch.utils.data import DataLoader as PytorchDataLoader
 PytorchDataloaderType = Literal["train", "test"]
 
 
-class PytorchDataloader(Dataloader):
+class SimplePytorchDataloader(PytorchDataloader):
     def __init__(
         self,
         dataset: PytorchDataset,

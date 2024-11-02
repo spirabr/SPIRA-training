@@ -16,11 +16,11 @@ from src.spira_training.shared.ports.train_logger import TrainLogger
 
 from src.spira_training.shared.core.models.dataset import Dataset
 
-from .interfaces.dataloader_factory import DataloaderFactory
-from .interfaces.optimizer import Optimizer
-from .interfaces.loss_calculator import LossCalculator
-from .interfaces.scheduler import Scheduler
-from .interfaces.checkpoint_manager import Checkpoint, CheckpointManager
+from .interfaces.pytorch_dataloader_factory import PytorchDataloaderFactory
+from .interfaces.pytorch_optimizer import PytorchOptimizer
+from .interfaces.pytorch_loss_calculator import PytorchLossCalculator
+from .interfaces.pytorch_scheduler import PytorchScheduler
+from .interfaces.pytorch_checkpoint_manager import Checkpoint, PytorchCheckpointManager
 
 from src.spira_training.shared.ports.model_trainer import ModelTrainer
 from src.spira_training.shared.core.models.trained_model import TrainedModel
@@ -33,14 +33,14 @@ class PytorchModelTrainer(ModelTrainer):
     def __init__(
         self,
         base_model: BaseModel,
-        optimizer: Optimizer,
-        train_dataloader_factory: DataloaderFactory,
-        test_dataloader_factory: DataloaderFactory,
-        train_loss_calculator: LossCalculator,
-        test_loss_calculator: LossCalculator,
+        optimizer: PytorchOptimizer,
+        train_dataloader_factory: PytorchDataloaderFactory,
+        test_dataloader_factory: PytorchDataloaderFactory,
+        train_loss_calculator: PytorchLossCalculator,
+        test_loss_calculator: PytorchLossCalculator,
         train_logger: TrainLogger,
-        scheduler: Scheduler,
-        checkpoint_manager: CheckpointManager,
+        scheduler: PytorchScheduler,
+        checkpoint_manager: PytorchCheckpointManager,
     ) -> None:
         self._model = base_model
         self._optimizer = optimizer

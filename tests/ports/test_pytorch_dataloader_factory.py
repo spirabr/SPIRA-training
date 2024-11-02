@@ -1,8 +1,8 @@
-from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.pytorch_dataloader import (
+from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.simple_pytorch_dataloader import (
     PytorchDataloaderType,
 )
-from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.pytorch_dataloader_factory import (
-    PytorchDataloaderFactory,
+from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.simple_pytorch_dataloader_factory import (
+    SimplePytorchDataloaderFactory,
 )
 from tests.base_test_model import BaseTestModel
 from tests.fakes.fake_dataset_repository import make_dataset
@@ -10,7 +10,7 @@ from tests.fakes.fake_pytorch_audio_factory import FakePytorchTensorFactory
 
 
 class SetupItems(BaseTestModel):
-    sut: PytorchDataloaderFactory
+    sut: SimplePytorchDataloaderFactory
     pytorch_tensor_factory: FakePytorchTensorFactory
 
 
@@ -19,7 +19,7 @@ def make_setup(
     batch_size: int = 1,
 ):
     pytorch_tensor_factory = FakePytorchTensorFactory()
-    sut = PytorchDataloaderFactory(
+    sut = SimplePytorchDataloaderFactory(
         batch_size=batch_size,
         dataloader_type=dataloader_type,
         num_workers=1,

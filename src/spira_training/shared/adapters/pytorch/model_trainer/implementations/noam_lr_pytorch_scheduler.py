@@ -1,28 +1,28 @@
 from abc import abstractmethod
 from typing import List
 
-from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.scheduler import (
-    Scheduler,
+from spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_scheduler import (
+    PytorchScheduler,
 )
 
-from .pytorch_optimizer_wrapper import PytorchOptimizerWrapper
+from .simple_pytorch_optimizer import SimplePytorchOptimizer
 import torch
 
 
-class PytorchLRScheduler(torch.optim.lr_scheduler.LRScheduler, Scheduler):
+class LrPytorchScheduler(torch.optim.lr_scheduler.LRScheduler, PytorchScheduler):
     @abstractmethod
     def get_lr(self) -> List[float]: ...
 
 
-class NoamLRScheduler(PytorchLRScheduler):
+class NoamLRPytorchScheduler(LrPytorchScheduler):
     def __init__(
-        self, pytorch_optimizer_wrapper: PytorchOptimizerWrapper, warmup_steps: float
+        self, pytorch_optimizer_wrapper: SimplePytorchOptimizer, warmup_steps: float
     ):
         super().__init__(pytorch_optimizer_wrapper.torch_optimizer)
 
         self.warmup_steps = float(warmup_steps)
 
-        self.scheduler = NoamLRScheduler(
+        self.scheduler = NoamLRPytorchScheduler(
             pytorch_optimizer_wrapper, warmup_steps=warmup_steps
         )
 
