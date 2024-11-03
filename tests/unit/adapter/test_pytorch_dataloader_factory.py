@@ -4,9 +4,9 @@ from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.si
 from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.simple_pytorch_dataloader_factory import (
     SimplePytorchDataloaderFactory,
 )
-from tests.base_test_model import BaseTestModel
-from tests.fakes.fake_dataset_repository import make_dataset
-from tests.fakes.fake_pytorch_audio_factory import FakePytorchTensorFactory
+from tests.unit.base_test_model import BaseTestModel
+from tests.unit.fakes.fake_dataset_repository import make_dataset
+from tests.unit.fakes.fake_pytorch_audio_factory import FakePytorchTensorFactory
 
 
 class SetupItems(BaseTestModel):

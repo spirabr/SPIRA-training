@@ -3,19 +3,19 @@ from src.spira_training.shared.adapters.pytorch.model_trainer.pytorch_model_trai
     PytorchModelTrainer,
 )
 from typing_extensions import TypedDict
-from tests.fakes.fake_checkpoint_manager import FakeCheckpointManager
-from tests.fakes.fake_dataloader import make_batches, make_dataloader
-from tests.fakes.fake_dataloader_factory import FakeDataloaderFactory
-from tests.fakes.fake_dataset_repository import make_dataset
-from tests.fakes.fake_loss_calculator import (
+from tests.unit.fakes.fake_checkpoint_manager import FakeCheckpointManager
+from tests.unit.fakes.fake_dataloader import make_batches, make_dataloader
+from tests.unit.fakes.fake_dataloader_factory import FakeDataloaderFactory
+from tests.unit.fakes.fake_dataset_repository import make_dataset
+from tests.unit.fakes.fake_loss_calculator import (
     FakeCyclingLossCalculator,
     FakeLossCalculator,
     make_loss,
 )
-from tests.fakes.fake_model import FakePytorchModel
-from tests.fakes.fake_optimizer import FakeOptimizer
-from tests.fakes.fake_scheduler import FakeScheduler
-from tests.fakes.fake_train_logger import FakeTrainLogger
+from tests.unit.fakes.fake_model import FakePytorchModel
+from tests.unit.fakes.fake_optimizer import FakeOptimizer
+from tests.unit.fakes.fake_scheduler import FakeScheduler
+from tests.unit.fakes.fake_train_logger import FakeTrainLogger
 
 
 # oi

@@ -4,10 +4,10 @@ from src.spira_training.shared.core.models.path import Path
 from src.spira_training.shared.core.services.model_training_service import (
     ModelTrainingService,
 )
-from tests.fakes.fake_dataset_repository import FakeDatasetRepository
-from tests.fakes.fake_dataset_splitter import FakeDatasetSplitter
-from tests.fakes.fake_model_trainer import FakeModelTrainer
-from tests.fakes.fake_trained_models_repository import FakeTrainedModelsRepository
+from tests.unit.fakes.fake_dataset_repository import FakeDatasetRepository
+from tests.unit.fakes.fake_dataset_splitter import FakeDatasetSplitter
+from tests.unit.fakes.fake_model_trainer import FakeModelTrainer
+from tests.unit.fakes.fake_trained_models_repository import FakeTrainedModelsRepository
 
 
 class ModelTrainingConfig(BaseModel):
