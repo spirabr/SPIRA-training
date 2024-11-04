@@ -7,8 +7,8 @@ from src.spira_training.shared.adapters.pytorch.models.pytorch_batch import (
 from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_dataloader import (
     PytorchDataloader,
 )
-from tests.fakes.fake_model import make_false_label
-from tests.fakes.fake_pytorch_audio_factory import create_empty_tensor
+from tests.unit.fakes.fake_model import make_false_label
+from tests.unit.fakes.fake_pytorch_audio_factory import create_empty_tensor
 
 
 class FakeDataloader(PytorchDataloader):

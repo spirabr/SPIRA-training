@@ -3,7 +3,7 @@ from src.spira_training.shared.core.models.trained_model import TrainedModel
 from src.spira_training.shared.ports.trained_models_repository import (
     TrainedModelsRepository,
 )
-from tests.fakes.fake_model import FakePytorchModel
+from tests.unit.fakes.fake_model import FakePytorchModel
 
 
 class FakeTrainedModelsRepository(TrainedModelsRepository):

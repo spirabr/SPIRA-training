@@ -9,8 +9,8 @@ from src.spira_training.shared.adapters.feature_transformer.mfcc_feature_transfo
 from src.spira_training.shared.core.audio_processor_factory import (
     create_audio_processor,
 )
-from tests.fakes.fake_feature_engineering_config import make_audio_processor_config
-from tests.fakes.fake_pytorch_audio_factory import FakePytorchTensorFactory
+from tests.unit.fakes.fake_feature_engineering_config import make_audio_processor_config
+from tests.unit.fakes.fake_pytorch_audio_factory import FakePytorchTensorFactory
 
 
 @pytest.mark.asyncio

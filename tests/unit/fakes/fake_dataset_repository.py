@@ -2,7 +2,7 @@ from pathlib import Path
 import random
 from src.spira_training.shared.core.models.dataset import Dataset, Label
 from src.spira_training.shared.ports.dataset_repository import DatasetRepository
-from tests.fakes.fake_audios_repository import make_audio
+from tests.unit.fakes.fake_audios_repository import make_audio
 
 
 class FakeDatasetRepository(DatasetRepository):

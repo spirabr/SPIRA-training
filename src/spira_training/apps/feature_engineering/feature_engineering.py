@@ -6,11 +6,11 @@ from src.spira_training.shared.core.services.feature_engineering_service import 
     FeatureEngineeringService,
 )
 from src.spira_training.shared.core.services.randomizer import Randomizer
-from tests.fakes.fake_dataset_repository import FakeDatasetRepository
-from tests.fakes.fake_audios_repository import FakeAudiosRepository
-from tests.fakes.fake_path_validator import FakePathValidator
-from tests.fakes.fake_file_reader import FakeFileReader
-from tests.fakes.fake_pytorch_audio_factory import FakePytorchTensorFactory
+from tests.unit.fakes.fake_dataset_repository import FakeDatasetRepository
+from tests.unit.fakes.fake_audios_repository import FakeAudiosRepository
+from tests.unit.fakes.fake_path_validator import FakePathValidator
+from tests.unit.fakes.fake_file_reader import FakeFileReader
+from tests.unit.fakes.fake_pytorch_audio_factory import FakePytorchTensorFactory
 
 
 async def main():

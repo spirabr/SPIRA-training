@@ -7,7 +7,7 @@ from src.spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch
     PytorchDataloaderFactory,
 )
 
-from tests.fakes.fake_dataloader import FakeDataloader, make_batches
+from tests.unit.fakes.fake_dataloader import FakeDataloader, make_batches
 
 
 class FakeDataloaderFactory(PytorchDataloaderFactory):
