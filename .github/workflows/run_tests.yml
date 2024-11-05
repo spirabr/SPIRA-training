@@ -17,4 +17,7 @@ jobs:
         
       - name: Run Unit Tests
         run: make unit-tests
+        
+      - name: Run Integration Tests
+        run: make integration-tests
   
