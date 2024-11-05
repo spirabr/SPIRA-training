@@ -1,6 +1,15 @@
 import pytest
+from spira_training.shared.adapters.pytorch.model_trainer.implementations.noam_lr_pytorch_scheduler import (
+    NoamLRPytorchScheduler,
+)
 from spira_training.shared.adapters.pytorch.model_trainer.implementations.pytorch_loss_calculator.multiple_loss_calculator import (
     AverageMultipleLossCalculator,
+)
+from spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_optimizer import (
+    PytorchOptimizer,
+)
+from spira_training.shared.adapters.pytorch.model_trainer.interfaces.pytorch_scheduler import (
+    PytorchScheduler,
 )
 from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.simple_pytorch_dataloader_factory import (
     SimplePytorchDataloaderFactory,
@@ -17,6 +26,7 @@ from src.spira_training.shared.adapters.pytorch.model_trainer.implementations.py
     BCELossCalculator,
     SingleLossCalculator,
 )
+from tests.unit.fakes.fake_train_logger import FakeTrainLogger
 
 
 @pytest.fixture()
@@ -33,7 +43,7 @@ def inner_torch_optimizer():
 
 
 @pytest.fixture()
-def pytorch_optimizer(inner_torch_optimizer):
+def pytorch_optimizer(inner_torch_optimizer) -> PytorchOptimizer:
     return SimplePytorchOptimizer(torch_optimizer=inner_torch_optimizer)
 
 
@@ -86,4 +96,19 @@ def test_loss_calculator(
 ) -> PytorchLossCalculator:
     return AverageMultipleLossCalculator(
         single_loss_calculator=single_test_loss_calculator,
+    )
+
+
+@pytest.fixture()
+def train_logger():
+    return FakeTrainLogger()
+
+
+@pytest.fixture()
+def scheduler(
+    pytorch_optimizer: PytorchOptimizer,
+) -> PytorchScheduler:
+    return NoamLRPytorchScheduler(
+        pytorch_optimizer_wrapper=pytorch_optimizer,
+        warmup_steps=10,
     )
