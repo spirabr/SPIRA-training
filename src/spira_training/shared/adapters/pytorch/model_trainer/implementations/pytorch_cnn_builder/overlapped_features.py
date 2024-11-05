@@ -16,6 +16,9 @@ class OverlappedFeaturesPytorchCnnBuilder(PytorchCnnBuilder):
         # get out shape
         return nn.Linear(4 * conv(inp).shape[-1], self.config.fc1_dim)
 
+    def build_fc2(self) -> nn.Linear:
+        return nn.Linear(self.config.fc1_dim, self.config.fc2_dim)
+
     def reshape_x(self, x):
         # x: [B, T, n_filters*num_feature]
         return x.view(x.size(0), x.size(1), -1)
