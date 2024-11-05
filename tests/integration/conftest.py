@@ -71,3 +71,19 @@ def train_loss_calculator(
     return AverageMultipleLossCalculator(
         single_loss_calculator=single_train_loss_calculator,
     )
+
+
+@pytest.fixture()
+def single_test_loss_calculator() -> SingleLossCalculator:
+    return BCELossCalculator(
+        reduction="sum",
+    )
+
+
+@pytest.fixture()
+def test_loss_calculator(
+    single_test_loss_calculator: SingleLossCalculator,
+) -> PytorchLossCalculator:
+    return AverageMultipleLossCalculator(
+        single_loss_calculator=single_test_loss_calculator,
+    )
