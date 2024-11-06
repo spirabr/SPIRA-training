@@ -12,9 +12,9 @@ import torch.nn as nn
 class InnerTorchModel(nn.Module):
     def __init__(self, cnn_builder: PytorchCnnBuilder):
         super().__init__()
+        self.mish = Mish()
 
         self.conv = self._build_cnn()
-        self.mish = Mish()
 
         self.fc1 = cnn_builder.build_fc1(self.conv)
         self.fc2 = cnn_builder.build_fc2()

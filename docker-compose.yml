@@ -9,11 +9,20 @@ services:
       - .:/app
       - /app/.venv
     
-  tests:
+  unit-tests:
     image: spira-training:latest
     build:
       context: .
-    command: "poetry run pytest"
+    command: "poetry run pytest tests/unit"
+    volumes:
+      - .:/app
+      - /app/.venv
+      
+  integration-tests:
+    image: spira-training:latest
+    build:
+      context: .
+    command: "poetry run pytest tests/integration"
     volumes:
       - .:/app
       - /app/.venv

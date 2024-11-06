@@ -8,6 +8,9 @@ from torch.nn.functional import binary_cross_entropy
 from typing_extensions import Self
 
 
+__all__ = ["SingleLossCalculator", "BCELossCalculator", "ClipBCELossCalculator"]
+
+
 class SingleLossCalculator(ABC):
     @abstractmethod
     def calculate_single_loss_tensor(
@@ -33,7 +36,7 @@ class BCELossCalculator(SingleLossCalculator):
         return tensor_loss
 
     def recalculate_weights(self):
-        self.bce_loss.backward()
+        self.bce_loss.reduction = self.reduction
 
     def clone(self) -> Self:
         return cast(Self, BCELossCalculator(reduction=self.reduction))

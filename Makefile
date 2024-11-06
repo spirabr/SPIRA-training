@@ -2,7 +2,10 @@ app:
 	docker compose up app
 
 unit-tests: 
-	docker compose run --rm tests
+	docker compose run --rm unit-tests
+
+integration-tests: 
+	docker compose run --rm integration-tests
 
 type-check-all:
 	poetry run pyright

@@ -26,9 +26,12 @@ class AverageMultipleLossCalculator(PytorchLossCalculator):
             self.single_loss_calculator.calculate_single_loss_tensor(
                 prediction=prediction, label=label
             )
+            .clone()
+            .detach()
+            .requires_grad_(True)
             for prediction, label in zip(predictions, labels)
         ]
-        loss_tensor = torch.tensor(sum(losses) / len(losses))
+        loss_tensor = sum(losses) / len(losses)
         return Loss(value=loss_tensor.tolist())
 
     def recalculate_weights(self):
